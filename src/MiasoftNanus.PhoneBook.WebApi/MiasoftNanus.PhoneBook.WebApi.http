@@ -1,0 +1,6 @@
+@MiasoftNanus.PhoneBook.WebApi_HostAddress = http://localhost:5236
+
+GET {{MiasoftNanus.PhoneBook.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
