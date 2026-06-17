@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MiasoftNanus.PhoneBook.Domain\MiasoftNanus.PhoneBook.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
