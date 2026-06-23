@@ -1,0 +1,8 @@
+# run on Windows
+dotnet run --project src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile [ProfileName]
+# run on Windows [ ProfileName = DEV, QA, PROD ]
+dotnet run --project src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile DEV
+# run on Linux
+dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile [ProfileName]
+# run on Linux [ ProfileName = DEV, QA, PROD ]
+dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile DEV
