@@ -6,3 +6,22 @@ dotnet run --project src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.We
 dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile [ProfileName]
 # run on Linux [ ProfileName = DEV, QA, PROD ]
 dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile DEV
+
+# init user-secrets
+# run on Windows
+dotnet user-secrets --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj init
+# run on Linux
+dotnet user-secrets --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj init
+
+# list user-secrets
+# run on Windows
+dotnet user-secrets --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj list
+# run on Linux
+dotnet user-secrets --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj list
+
+# set user-secrets
+# run on Windows
+dotnet user-secrets --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj set "API:Token" "ApiToken"
+# run on Linux
+dotnet user-secrets --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj set "API:Token" "ApiToken"
+
