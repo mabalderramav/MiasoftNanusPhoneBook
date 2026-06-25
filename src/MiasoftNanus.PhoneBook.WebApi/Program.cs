@@ -3,11 +3,6 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.EnvironmentName.Equals("DEV", StringComparison.OrdinalIgnoreCase))
-{
-    builder.Configuration.AddUserSecrets<Program>(optional: true);
-}
-
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -15,7 +10,7 @@ builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("API"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (builder.Environment.EnvironmentName.Equals("DEV", StringComparison.OrdinalIgnoreCase))
+if (builder.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
@@ -57,4 +52,4 @@ app.MapGet("/Config", (IConfiguration configuration, IOptions<ApiConfig> apiConf
     });
 });
 
-app.Run();
+await app.RunAsync();
