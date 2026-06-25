@@ -25,3 +25,9 @@ dotnet user-secrets --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.P
 # run on Linux
 dotnet user-secrets --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj set "API:Token" "ApiToken"
 
+# add Serilog
+# run on Windows
+dotnet add package Serilog.AspNetCore --version 10.0.0 --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj 
+# run on Linux
+dotnet add package Serilog.AspNetCore --version 10.0.0 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj 
+
