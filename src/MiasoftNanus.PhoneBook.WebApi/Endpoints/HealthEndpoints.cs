@@ -24,14 +24,21 @@ public static class HealthEndpoints
             description = "A simple phone book API built with ASP.NET Core."
         }));
         app.MapGet("/status", () => Results.Ok(new { status = "Running", timestamp = DateTime.UtcNow }));
-        app.MapGet("/metrics", () => Results.Ok(new
+        app.MapGet("/metrics", (IHostEnvironment env) =>
         {
-            uptime =
-                (DateTime.UtcNow - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime())
-                .TotalSeconds,
-            memoryUsage = GC.GetTotalMemory(false),
-            threadCount = System.Diagnostics.Process.GetCurrentProcess().Threads.Count
-        }));
+            if (!env.IsDevelopment())
+            {
+                return Results.NotFound();
+            }
+
+            return Results.Ok(new
+            {
+                uptime = (DateTime.UtcNow - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime())
+                    .TotalSeconds,
+                memoryUsage = GC.GetTotalMemory(false),
+                threadCount = System.Diagnostics.Process.GetCurrentProcess().Threads.Count
+            });
+        });
         app.MapGet("/config",
             (IConfiguration configuration, IOptions<ApiConfig> apiConfigOptions, IHostEnvironment env) =>
 
