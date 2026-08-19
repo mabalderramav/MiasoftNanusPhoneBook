@@ -1,0 +1,5 @@
+# list SDKs
+dotnet --list-sdks
+
+# set SDK version
+dotnet new globaljson --sdk-version 10.0.303 --force
