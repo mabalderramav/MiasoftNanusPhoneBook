@@ -26,21 +26,20 @@ public static class HealthEndpoints
             memoryUsage = GC.GetTotalMemory(false),
             threadCount = System.Diagnostics.Process.GetCurrentProcess().Threads.Count
         }));
-        app.MapGet("/Config", (IConfiguration configuration, IOptions<ApiConfig> apiConfigOptions) =>
+        app.MapGet("/config", (IConfiguration configuration, IOptions<ApiConfig> apiConfigOptions, IHostEnvironment env) =>
         {
+            if (!env.IsDevelopment())
+            {
+                return Results.NotFound();
+            }
+
             var apiConfig = apiConfigOptions.Value;
             var environment = configuration["ASPNETCORE_ENVIRONMENT"];
-            var connectionString = configuration.GetConnectionString("ConnectionSql");
-            var timeout = apiConfig.Timeout;
-            var baseUrl = apiConfig.BaseUrl;
-            var token = apiConfig.Token;
             return Results.Ok(new
             {
                 environment,
-                connectionString,
-                timeout,
-                baseUrl,
-                token
+                timeout = apiConfig.Timeout,
+                baseUrl = apiConfig.BaseUrl
             });
         });
     }
