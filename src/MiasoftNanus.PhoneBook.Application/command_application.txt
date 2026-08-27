@@ -1,0 +1,11 @@
+# Add package to project
+# Add FluentValidation
+# run on Windows
+dotnet add package FluentValidation --version 12.1.1 --project .\src\MiasoftNanus.PhoneBook.Application\MiasoftNanus.PhoneBook.Application.csproj
+# run on Linux
+dotnet add package FluentValidation --version 12.1.1 --project ./src/MiasoftNanus.PhoneBook.Application/MiasoftNanus.PhoneBook.Application.csproj
+# Add MediatR
+# run on Windows
+dotnet add package MediatR --version 14.2.0 --project ./src/MiasoftNanus.PhoneBook.Application/MiasoftNanus.PhoneBook.Application.csproj
+# run on Linux
+dotnet add package MediatR --version 14.2.0 --project ./src/MiasoftNanus.PhoneBook.Application/MiasoftNanus.PhoneBook.Application.csproj
