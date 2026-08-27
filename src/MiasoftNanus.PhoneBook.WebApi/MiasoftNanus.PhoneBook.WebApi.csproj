@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiasoftNanus.PhoneBook.Application\MiasoftNanus.PhoneBook.Application.csproj" />
-    <ProjectReference Include="..\MiasoftNanus.PhoneBook.Contracts\MiasoftNanus.PhoneBook.Contracts.csproj" />
     <ProjectReference Include="..\MiasoftNanus.PhoneBook.Domain\MiasoftNanus.PhoneBook.Domain.csproj" />
     <ProjectReference Include="..\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj" />
   </ItemGroup>

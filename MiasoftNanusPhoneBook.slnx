@@ -1,7 +1,6 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/MiasoftNanus.PhoneBook.Application/MiasoftNanus.PhoneBook.Application.csproj" />
-    <Project Path="src/MiasoftNanus.PhoneBook.Contracts/MiasoftNanus.PhoneBook.Contracts.csproj" />
     <Project Path="src/MiasoftNanus.PhoneBook.Domain/MiasoftNanus.PhoneBook.Domain.csproj" />
     <Project Path="src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj" />
     <Project Path="src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj" />
