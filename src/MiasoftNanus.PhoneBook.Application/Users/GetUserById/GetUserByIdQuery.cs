@@ -9,6 +9,6 @@ namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
 /// This query is used to request detailed user information specified by a GUID.
 /// It encapsulates the unique identifier of the user and is designed to be handled by
 /// a query handler that processes the request and provides the corresponding user data
-/// in the form of a <c>GetUserByResult</c>.
+/// in the form of a <c>GetUserByIdResult</c>.
 /// </remarks>
-public record GetUserByIdQuery(Guid Id) : IQuery<GetUserByResult>;
+public record GetUserByIdQuery(Guid Id) : IQuery<GetUserByIdResult>;
