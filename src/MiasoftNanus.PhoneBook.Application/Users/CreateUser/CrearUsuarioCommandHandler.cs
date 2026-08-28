@@ -59,25 +59,13 @@ internal sealed class CreateUserCommandHandler(
 
         if (emailResult.IsFailure)
             return Result.Failure<Guid>(emailResult.Error);
-        var addressResult = new Address(
-            request.Country,
-            request.State,
-            request.Province,
-            request.District,
-            request.Street
-        );
-        var userDataCreation = new UserCreationData()
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Password = passwordResult.Value,
-            Birthdate = request.Birthdate.ToUniversalTime(),
-            Email = emailResult.Value,
-            Address = addressResult,
-            States = request.States,
-            DateOfLastChange = dateTimeProvider.CurrentTime,
-            ProfileId = profileResult.Id
-        };
+        
+        var userDataCreation = request.MapToUserCreationData(
+            passwordResult.Value, 
+            emailResult.Value, 
+            profileResult, 
+            dateTimeProvider);
+        
         var usuarioResult = User.Create(userDataCreation);
 
         if (usuarioResult.IsFailure)

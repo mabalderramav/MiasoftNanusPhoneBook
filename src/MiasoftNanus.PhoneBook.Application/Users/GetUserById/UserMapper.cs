@@ -7,7 +7,7 @@ namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
 /// This class is used as part of the application layer for transforming domain user entities
 /// into a format suited for application queries.
 /// </summary>
-public static class GetUserByIdMapper
+public static class UserMapper
 {
     /// <summary>
     /// Maps a <see cref="User"/> entity to a <see cref="GetUserByIdResult"/> record.
