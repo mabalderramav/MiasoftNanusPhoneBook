@@ -6,12 +6,12 @@ namespace MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 /// Defines the contract for repository operations related to the <c>Profile</c> entity in the domain.
 /// </summary>
 /// <remarks>
-/// The <c>IRolRepository</c> interface provides methods to interact with and manage
+/// The <c>IProfileRepository</c> interface provides methods to interact with and manage
 /// <c>Profile</c> entities, specifically for retrieving profiles based on their unique name.
 /// This repository abstraction supports asynchronous operations and leverages cancellation tokens
 /// to allow cooperative cancellation of tasks.
 /// </remarks>
-public interface IRolRepository
+public interface IProfileRepository
 {
     /// <summary>
     /// Asynchronously retrieves a <c>Profile</c> entity by its unique name.

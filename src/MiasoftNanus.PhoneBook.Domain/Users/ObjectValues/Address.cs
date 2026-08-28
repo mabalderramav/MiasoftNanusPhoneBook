@@ -6,7 +6,7 @@ namespace MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 /// </summary>
 public record Address(
     string Country,
-    string Department,
+    string State,
     string Province,
     string District,
     string Street
