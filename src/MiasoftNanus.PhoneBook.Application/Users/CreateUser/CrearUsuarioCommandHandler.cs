@@ -9,6 +9,33 @@ using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.CreateUser;
 
+/// <summary>
+/// Handles the execution of the <see cref="CreateUserCommand"/>.
+/// This class is responsible for managing the creation of a new user,
+/// including interactions with the user and profile repositories,
+/// managing transactional consistency, and handling date-time operations.
+/// </summary>
+/// <remarks>
+/// The <see cref="CreateUserCommandHandler"/> uses the following dependencies:
+/// <list type="bullet">
+/// <item>
+/// <term>IUserRepository</term>
+/// <description>Provides access to user-related data and operations in the persistence layer.</description>
+/// </item>
+/// <item>
+/// <term>IProfileRepository</term>
+/// <description>Handles operations related to user profiles within the persistence layer.</description>
+/// </item>
+/// <item>
+/// <term>IUnitOfWork</term>
+/// <description>Manages transactional consistency across repositories.</description>
+/// </item>
+/// <item>
+/// <term>IDateTimeProvider</term>
+/// <description>Supplies the current date and time, abstracted for better testability.</description>
+/// </item>
+/// </list>
+/// </remarks>
 internal sealed class CreateUserCommandHandler(
     IUserRepository userRepository,
     IProfileRepository profileRepository,
