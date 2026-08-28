@@ -10,7 +10,7 @@ namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
 /// and geographical details, account metadata, and role information.
 /// It is used as the return type for queries related to user retrieval.
 /// </remarks>
-public sealed record GetUserByResult(
+public sealed record GetUserByIdResult(
     Guid Id,
     string FirstName,
     string LastName,
