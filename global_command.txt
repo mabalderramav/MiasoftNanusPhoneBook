@@ -3,3 +3,11 @@ dotnet --list-sdks
 
 # set SDK version
 dotnet new globaljson --sdk-version 10.0.303 --force
+
+# This command is used to list the packages in the project
+dotnet list [project] package
+# Example
+# Run on windows
+dotnet list .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj package
+# Run on linux
+dotnet list ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj package

@@ -1,0 +1,27 @@
+# This command is used to list the packages in the project
+# Example
+# Run on windows
+dotnet list .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj package
+# Run on linux
+dotnet list ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj package
+# Add package to project
+# EFCore.NamingConventions
+# Run on Windows
+dotnet add package EFCore.NamingConventions --version 10.0.1 --project .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Run on Linux
+dotnet add package EFCore.NamingConventions --version 10.0.1 --project ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj
+# EFCore
+# Run on Windows
+dotnet add package Microsoft.EntityFrameworkCore --version 10.0.11 --project .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Run on Linux
+dotnet add package Microsoft.EntityFrameworkCore --version 10.0.11 --project ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Configuration
+# Run on Windows
+dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 10.0.11 --project .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Run on Linux
+dotnet add package Microsoft.Extensions.Configuration.Abstractions --version 10.0.11 --project ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Npgsql
+# Run on Windows
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.3 --project .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj
+# Run on Linux
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.3 --project ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj
