@@ -4,7 +4,7 @@ using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Errors;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
-using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
+using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.CreateUser;
@@ -50,12 +50,12 @@ internal sealed class CreateUserCommandHandler(
         if (profileResult is null)
             return Result.Failure<Guid>(ProfileErrors.ProfileNotFound);
 
-        var passwordResult = Password.Create(request.Password);
+        var passwordResult = ObjectValues.Password.Create(request.Password);
 
         if (passwordResult.IsFailure)
             return Result.Failure<Guid>(passwordResult.Error);
 
-        var emailResult = Email.Create(request.Email);
+        var emailResult = ObjectValues.Email.Create(request.Email);
 
         if (emailResult.IsFailure)
             return Result.Failure<Guid>(emailResult.Error);
