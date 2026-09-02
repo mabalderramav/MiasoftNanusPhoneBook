@@ -55,30 +55,34 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var result = await base.SaveChangesAsync(cancellationToken);
-        await PublishDomainEventAsync();
+        await PublishDomainEventAsync(cancellationToken);
         return result;
     }
 
     /// <summary>
-    /// Publishes all domain events collected from the tracked entities within the current context.
-    /// This method identifies entities with domain events, extracts the events, clears them from the entities,
-    /// and dispatches them through the configured <see cref="IPublisher"/> implementation.
+    /// Publishes all domain events associated with changes tracked in the current
+    /// database context. This method iterates through all entities with domain events,
+    /// invokes their domain events for publishing, and clears the events after publishing.
     /// </summary>
-    private async Task PublishDomainEventAsync()
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> that can be used to propagate notifications
+    /// that the operation should be canceled.
+    /// </param>
+    private async Task PublishDomainEventAsync(CancellationToken cancellationToken)
     {
         var domainEvents = ChangeTracker
             .Entries<Entity>()
             .Select(entity => entity.Entity)
             .SelectMany(e =>
             {
-                var domainEvents = e.GetDomainEvents();
+                var domainEvents = e.GetDomainEvents().ToList();
                 e.ClearDomainEvents();
                 return domainEvents;
             }).ToList();
 
         foreach (var domainEvent in domainEvents)
         {
-            await publisher.Publish(domainEvent);
+            await publisher.Publish(domainEvent, cancellationToken);
         }
     }
 }
