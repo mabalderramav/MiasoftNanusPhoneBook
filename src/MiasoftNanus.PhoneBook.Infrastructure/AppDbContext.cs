@@ -16,7 +16,8 @@ namespace MiasoftNanus.PhoneBook.Infrastructure;
 /// entities. It integrates the Mediator pattern by using an <see cref="IPublisher"/>
 /// to publish domain events after successful database operations.
 /// </remarks>
-public class AppDbContext(DbContextOptions options, IPublisher publisher) : DbContext(options), IUnitOfWork
+public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher publisher)
+    : DbContext(options), IUnitOfWork
 {
     /// <summary>
     /// Configures the entity model using the specified <see cref="ModelBuilder"/>.
@@ -47,7 +48,7 @@ public class AppDbContext(DbContextOptions options, IPublisher publisher) : DbCo
     /// A task representing the asynchronous save operation. The task result contains the
     /// number of state entries written to the database.
     /// </returns>
-    /// <exception cref="Exception">
+    /// <exception cref="DbUpdateException">
     /// Thrown when an error occurs while saving changes to the database. The exception contains
     /// detailed information regarding the failure.
     /// </exception>
@@ -58,13 +59,11 @@ public class AppDbContext(DbContextOptions options, IPublisher publisher) : DbCo
             var result = await base.SaveChangesAsync(cancellationToken);
             await PublishDomainEventAsync();
             return result;
-
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
-            throw new Exception($"Error when saving changes to the database: {ex.Message}", ex);
+            throw new DbUpdateException($"Error when saving changes to the database: {ex.Message}", ex);
         }
-       
     }
 
     /// <summary>
@@ -76,14 +75,14 @@ public class AppDbContext(DbContextOptions options, IPublisher publisher) : DbCo
     {
         var domainEvents = ChangeTracker
             .Entries<Entity>()
-            .Select( entity => entity.Entity)
-            .SelectMany( e =>
+            .Select(entity => entity.Entity)
+            .SelectMany(e =>
             {
                 var domainEvents = e.GetDomainEvents();
                 e.ClearDomainEvents();
                 return domainEvents;
             }).ToList();
-        
+
         foreach (var domainEvent in domainEvents)
         {
             await publisher.Publish(domainEvent);

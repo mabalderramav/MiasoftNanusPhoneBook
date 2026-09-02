@@ -79,7 +79,7 @@ public abstract class Entity
     /// collection. It is typically used after domain events have been processed
     /// to reset the state of the event collection.
     /// </remarks>
-    public void ClearDomainEvents()
+    internal void ClearDomainEvents()
     {
         _domainEvents.Clear();
     }
@@ -91,5 +91,5 @@ public abstract class Entity
     /// An <see cref="IReadOnlyCollection{T}"/> containing the domain events. This ensures that the events
     /// are exposed in a read-only manner, preserving the integrity of the internal collection.
     /// </returns>
-    public IReadOnlyCollection<IDomainEvent> GetDomainEvents() => _domainEvents.AsReadOnly();
+    internal IReadOnlyCollection<IDomainEvent> GetDomainEvents() => _domainEvents.AsReadOnly();
 }
