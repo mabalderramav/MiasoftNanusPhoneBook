@@ -54,16 +54,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
     /// </exception>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var result = await base.SaveChangesAsync(cancellationToken);
-            await PublishDomainEventAsync();
-            return result;
-        }
-        catch (DbUpdateException ex)
-        {
-            throw new DbUpdateException($"Error when saving changes to the database: {ex.Message}", ex);
-        }
+        var result = await base.SaveChangesAsync(cancellationToken);
+        await PublishDomainEventAsync();
+        return result;
     }
 
     /// <summary>
