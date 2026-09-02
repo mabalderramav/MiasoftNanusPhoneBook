@@ -82,7 +82,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
 
         foreach (var domainEvent in domainEvents)
         {
-            await publisher.Publish(domainEvent, cancellationToken);
+            try
+            {
+                await publisher.Publish(domainEvent, cancellationToken);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                throw new InvalidOperationException(
+                    $"The database transaction was committed successfully, but publishing the '{domainEvent.GetType().Name}' domain event failed.",
+                    ex);
+            }
         }
     }
 }
