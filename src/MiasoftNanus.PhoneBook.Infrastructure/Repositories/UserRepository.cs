@@ -9,4 +9,4 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Repositories;
 /// Inherits from the generic <see cref="Repository{T}"/>, where T is the <see cref="User"/> entity.
 /// Implements the <see cref="IUserRepository"/> interface for user-specific data access methods.
 /// </summary>
-internal sealed class UsuarioRepository(AppDbContext appDbContext) : Repository<User>(appDbContext), IUserRepository;
+internal sealed class UserRepository(AppDbContext appDbContext) : Repository<User>(appDbContext), IUserRepository;

@@ -9,7 +9,8 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Repositories;
 /// This repository is responsible for querying and performing operations on Profile data
 /// using the application's database context.
 /// </summary>
-internal sealed class ProfileRepository(AppDbContext appDbContext) : Repository<Profile>(appDbContext), IProfileRepository
+internal sealed class ProfileRepository(AppDbContext appDbContext)
+    : Repository<Profile>(appDbContext), IProfileRepository
 {
     /// <summary>
     /// Retrieves a profile entity by its name.
@@ -22,7 +23,8 @@ internal sealed class ProfileRepository(AppDbContext appDbContext) : Repository<
     /// </returns>
     public async Task<Profile?> GetByNameAsync(string profileName, CancellationToken cancellationToken = default)
     {
-        return await AppDbContext.Set<Profile>().FirstOrDefaultAsync
-            (e => e.ProfileName == profileName, cancellationToken);
+        return await AppDbContext
+            .Set<Profile>()
+            .FirstOrDefaultAsync(u => u.ProfileName == profileName, cancellationToken);
     }
 }
