@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Email;
 
-namespace MiasoftNanus.PhoneBook.Infrastructure.Email;
+namespace MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Email;
 
 /// <summary>
 /// Provides functionality for sending emails using the IEmailService contract.

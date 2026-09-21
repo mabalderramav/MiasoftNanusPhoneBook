@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 
-namespace MiasoftNanus.PhoneBook.Infrastructure.Time;
+namespace MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Time;
 
 /// <summary>
 /// Implements the <see cref="IDateTimeProvider"/> interface to provide a standard mechanism
