@@ -8,7 +8,7 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Users;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    void IEntityTypeConfiguration<User>.Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("phonebook_users");
         builder.HasKey(u => u.Id);
