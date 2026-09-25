@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
-using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Repositories;
+using MiasoftNanus.PhoneBook.Infrastructure.Shared.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Profiles;

@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
-using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Repositories;
+using MiasoftNanus.PhoneBook.Infrastructure.Shared.Repositories;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Users;
 
