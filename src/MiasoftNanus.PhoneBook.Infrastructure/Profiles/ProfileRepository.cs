@@ -1,8 +1,9 @@
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
+using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace MiasoftNanus.PhoneBook.Infrastructure.Repositories;
+namespace MiasoftNanus.PhoneBook.Infrastructure.Profiles;
 
 /// <summary>
 /// Provides the implementation for managing Profile entities within the application.

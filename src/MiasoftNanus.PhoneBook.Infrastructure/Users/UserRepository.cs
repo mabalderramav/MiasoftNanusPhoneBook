@@ -1,7 +1,8 @@
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
+using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Repositories;
 
-namespace MiasoftNanus.PhoneBook.Infrastructure.Repositories;
+namespace MiasoftNanus.PhoneBook.Infrastructure.Users;
 
 /// <summary>
 /// Represents a repository implementation for performing data access operations related to user entities.
@@ -9,4 +10,5 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Repositories;
 /// Inherits from the generic <see cref="Repository{T}"/>, where T is the <see cref="User"/> entity.
 /// Implements the <see cref="IUserRepository"/> interface for user-specific data access methods.
 /// </summary>
-internal sealed class UserRepository(AppDbContext appDbContext) : Repository<User>(appDbContext), IUserRepository;
+internal sealed class UserRepository(AppDbContext appDbContext) : 
+    Repository<User>(appDbContext), IUserRepository;
