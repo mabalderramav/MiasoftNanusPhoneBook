@@ -1,7 +1,7 @@
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Repositories;
+namespace MiasoftNanus.PhoneBook.Infrastructure.Shared.Repositories;
 
 /// <summary>
 /// A generic repository base class for managing entities in the database.

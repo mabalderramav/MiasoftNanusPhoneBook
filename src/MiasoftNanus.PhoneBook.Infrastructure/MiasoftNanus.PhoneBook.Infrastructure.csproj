@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Abstractions\" />
+    <Folder Include="Shared\" />
   </ItemGroup>
 
 </Project>
