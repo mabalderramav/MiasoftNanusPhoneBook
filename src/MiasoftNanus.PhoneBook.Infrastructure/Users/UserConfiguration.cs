@@ -14,59 +14,56 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(u => u.Id);
 
         builder.Property(u => u.FirstName)
-               .IsRequired()
-               .HasMaxLength(50);
+            .IsRequired()
+            .HasMaxLength(50);
 
         builder.Property(u => u.LastName)
-                .IsRequired()
-                .HasMaxLength(100);
+            .IsRequired()
+            .HasMaxLength(100);
 
         builder.Property(u => u.Password)
-                .HasConversion
-                (
-                    password => password!.Value,
-                    value => Password.Create(value).Value
-                ).IsRequired();
+            .HasConversion
+            (
+                password => password!.Value,
+                value => Password.Create(value).Value
+            ).IsRequired();
 
         builder.Property(u => u.UserName)
-                .HasConversion
-                (
-                    nombreUsuario => nombreUsuario!.Value,
-                    value => Username.Create(value).Value
-                ).IsRequired();
+            .HasConversion
+            (
+                nombreUsuario => nombreUsuario!.Value,
+                value => Username.Create(value).Value
+            ).IsRequired();
 
         builder.Property(u => u.Birthdate)
-                .IsRequired();
+            .IsRequired();
 
         builder.Property(u => u.Email)
-                .HasConversion
-                (
-                    email => email!.Value,
-                    value => Email.Create(value).Value
-                ).IsRequired();
+            .HasConversion
+            (
+                email => email!.Value,
+                value => Email.Create(value).Value
+            ).IsRequired();
 
         builder.OwnsOne(u => u.Address);
 
-
         builder.Property(u => u.States)
-                .HasConversion
-                (
-                    states => states!.ToString(),
-                    value => Enum.Parse<States>(value!)
-                ).IsRequired();
-
+            .HasConversion
+            (
+                states => states!.ToString(),
+                value => Enum.Parse<States>(value!)
+            ).IsRequired();
 
         builder.Property(u => u.DateOfLastChange)
-                .IsRequired();
+            .IsRequired();
 
         builder.HasOne(u => u.Profile)
-                .WithMany()
-                .HasForeignKey(u => u.ProfileId)
-                .IsRequired();
+            .WithMany()
+            .HasForeignKey(u => u.ProfileId)
+            .IsRequired();
 
         builder.Property<uint>("version")
-               .IsRowVersion()
-               .IsConcurrencyToken();
+            .IsRowVersion()
+            .IsConcurrencyToken();
     }
-   
 }
