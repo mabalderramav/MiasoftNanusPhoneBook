@@ -1,5 +1,7 @@
+using MiasoftNanus.PhoneBook.Infrastructure;
 using MiasoftNanus.PhoneBook.WebApi.Config;
 using MiasoftNanus.PhoneBook.WebApi.Endpoints;
+using MiasoftNanus.PhoneBook.WebApi.Extensions;
 using Serilog;
 using Serilog.Events;
 
@@ -24,6 +26,7 @@ try
     #region Services
     builder.Services.AddOpenApi();
     builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("API"));
+    builder.Services.AddInfrastructure(builder.Configuration);
     #endregion
     
     var app = builder.Build();
@@ -35,6 +38,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    await app.MigrateDatabase();
 
     #region Endpoints
     app.MapGet("/", () => "Hello World! - Oscar Martin Balderrama Vaca - Miasoft Nanus PhoneBook API");
@@ -45,7 +49,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.Fatal(ex, "An unhandled exception has occurred in the middleware of the application.");
+    logger.Fatal(ex, "An unhandled exception has occurred in the middleware of the application");
 }
 finally
 {

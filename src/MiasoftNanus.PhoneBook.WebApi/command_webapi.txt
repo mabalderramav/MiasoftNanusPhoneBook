@@ -29,5 +29,23 @@ dotnet user-secrets --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.P
 # run on Windows
 dotnet add package Serilog.AspNetCore --version 10.0.0 --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj 
 # run on Linux
-dotnet add package Serilog.AspNetCore --version 10.0.0 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj 
+dotnet add package Serilog.AspNetCore --version 10.0.0 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj
+
+# list packages
+# Run on Windows
+dotnet list .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj package
+# Run on Linux
+dotnet list ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj package
+
+# add Microsoft.EntityFrameworkCore.Design
+# Run on Windows
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.12 --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj
+# Run on Linux
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.12 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj
+
+# add Microsoft.EntityFrameworkCore.Tools
+# Run on Windows
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 10.0.12 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj
+# Run on Linux
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 10.0.12 --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj
 
