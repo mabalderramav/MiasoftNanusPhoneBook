@@ -8,3 +8,9 @@ dotnet add package MediatR --version 14.1.0 --project ./src/MiasoftNanus.PhoneBo
 dotnet add package ErrorOr --version 2.1.1 --project .\src\MiasoftNanus.PhoneBook.Domain\MiasoftNanus.PhoneBook.Domain.csproj
 # run on Linux
 dotnet add package ErrorOr --version 2.1.1 --project ./src/MiasoftNanus.PhoneBook.Domain/MiasoftNanus.PhoneBook.Domain.csproj
+
+# MediatR.Contracts
+# run on Windows
+dotnet add package MediatR.Contracts --version 2.0.1 --project .\src\MiasoftNanus.PhoneBook.Domain\MiasoftNanus.PhoneBook.Domain.csproj
+# run on Linux
+dotnet add package MediatR.Contracts --version 2.0.1 --project ./src/MiasoftNanus.PhoneBook.Domain/MiasoftNanus.PhoneBook.Domain.csproj

@@ -7,7 +7,19 @@ dotnet new globaljson --sdk-version 10.0.303 --force
 # This command is used to list the packages in the project
 dotnet list [project] package
 # Example
-# Run on windows
+# Run on Windows
 dotnet list .\src\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj package
-# Run on linux
+# Run on Linux
 dotnet list ./src/MiasoftNanus.PhoneBook.Infrastructure/MiasoftNanus.PhoneBook.Infrastructure.csproj package
+
+# This command is used to update the database
+# run on Windows
+dotnet ef --verbose migrations add InitialCreate -p .\src\MiasoftNanus.PhoneBook.Infrastructure\ -s .\src\MiasoftNanus.PhoneBook.WebApi\
+# run on Linux
+dotnet ef --verbose migrations add InitialCreate -p src/MiasoftNanus.PhoneBook.Infrastructure/ -s src/MiasoftNanus.PhoneBook.WebApi/
+
+# This command is used to remove migrations
+# run on Windows
+dotnet ef migrations remove -p .\src\MiasoftNanus.PhoneBook.Infrastructure\ -s .\src\MiasoftNanus.PhoneBook.WebApi\
+# run on Linux
+dotnet ef migrations remove -p src/MiasoftNanus.PhoneBook.Infrastructure/ -s src/MiasoftNanus.PhoneBook.WebApi/

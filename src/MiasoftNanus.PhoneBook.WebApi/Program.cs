@@ -1,3 +1,4 @@
+using MiasoftNanus.PhoneBook.Application;
 using MiasoftNanus.PhoneBook.Infrastructure;
 using MiasoftNanus.PhoneBook.WebApi.Config;
 using MiasoftNanus.PhoneBook.WebApi.Endpoints;
@@ -26,6 +27,7 @@ try
     #region Services
     builder.Services.AddOpenApi();
     builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("API"));
+    builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
     #endregion
     
