@@ -1,5 +1,5 @@
+using MiasoftNanus.PhoneBook.Application.Abstractions.Email;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
-using MiasoftNanus.PhoneBook.Application.Email;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;

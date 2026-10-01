@@ -1,4 +1,4 @@
-using MiasoftNanus.PhoneBook.Application.Email;
+using MiasoftNanus.PhoneBook.Application.Abstractions.Email;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Email;
 

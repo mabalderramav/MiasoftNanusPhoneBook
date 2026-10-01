@@ -34,7 +34,7 @@ internal abstract class Repository<T>(AppDbContext appDbContext)
     /// </returns>
     public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await AppDbContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        return await AppDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
     /// <summary>
