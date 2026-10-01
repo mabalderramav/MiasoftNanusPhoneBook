@@ -5,7 +5,7 @@ namespace MiasoftNanus.PhoneBook.WebApi.Extensions;
 /// <summary>
 /// A static class providing extension methods for configuring application services in the DI container.
 /// </summary>
-public static class AppConfigServicesBuilderExtensions
+public static class AppConfigBuilderExtensions
 {
     /// <summary>
     /// Adds application configuration services to the dependency injection container,
