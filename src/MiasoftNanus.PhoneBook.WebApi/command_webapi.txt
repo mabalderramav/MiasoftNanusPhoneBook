@@ -6,6 +6,10 @@ dotnet run --project src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.We
 dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile [ProfileName]
 # run on Linux [ ProfileName = Development, Staging, Production ]
 dotnet run --project src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile Development
+# run on Windows with connection string from database
+dotnet run --project .\src\MiasoftNanus.PhoneBook.WebApi\MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile Development -- --ConnectionStrings:DefaultConnection="[Database Connection String]"
+# run on Linux with connection string from database
+dotnet run --project ./src/MiasoftNanus.PhoneBook.WebApi/MiasoftNanus.PhoneBook.WebApi.csproj --launch-profile Development -- --ConnectionStrings:DefaultConnection='[Database Connection String]'
 
 # init user-secrets
 # run on Windows
