@@ -26,6 +26,7 @@ internal sealed class ProfileRepository(AppDbContext appDbContext)
     {
         return await AppDbContext
             .Set<Profile>()
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.ProfileName == profileName, cancellationToken);
     }
 }

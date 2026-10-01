@@ -1,4 +1,4 @@
-﻿namespace MiasoftNanus.PhoneBook.Application.Email;
+﻿namespace MiasoftNanus.PhoneBook.Application.Abstractions.Email;
 
 /// <summary>
 /// Defines the contract for email-related operations.
@@ -12,5 +12,5 @@ public interface IEmailService
     /// <param name="subject">The subject line of the email.</param>
     /// <param name="body">The content of the email message.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task SendEmailAsync(string to, string subject, string body);
+    Task SendEmailAsync(string to, string subject, string body);
 }
