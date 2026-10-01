@@ -1,19 +1,16 @@
-using MiasoftNanus.PhoneBook.Application;
-using MiasoftNanus.PhoneBook.Infrastructure;
-using MiasoftNanus.PhoneBook.WebApi.Config;
-using MiasoftNanus.PhoneBook.WebApi.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.Extensions;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Serilog configuration
+#region Serilog configuration
 var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log.txt");
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File(logPath, rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Information)
     .CreateLogger();
+#endregion
 
 try
 {
@@ -26,9 +23,8 @@ try
 
     #region Services
     builder.Services.AddOpenApi();
-    builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("API"));
-    builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddApplicationConfigurationServices(builder.Configuration);
+    builder.Services.AddApplicationLayersServices(builder.Configuration);
     #endregion
     
     var app = builder.Build();
@@ -37,15 +33,11 @@ try
     if (builder.Environment.IsDevelopment())
     {
         app.MapOpenApi();
+        await app.MigrateDatabaseAsync();
     }
 
     app.UseHttpsRedirection();
-    await app.MigrateDatabase();
-
-    #region Endpoints
-    app.MapGet("/", () => "Hello World! - Oscar Martin Balderrama Vaca - Miasoft Nanus PhoneBook API");
-    app.MapHealthEndpoints();
-    #endregion
+    app.MapEndpoints();
 
     await app.RunAsync();
 }
