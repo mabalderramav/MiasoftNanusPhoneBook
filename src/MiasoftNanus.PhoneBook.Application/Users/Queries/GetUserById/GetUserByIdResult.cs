@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Domain.Shared;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
+namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 
 /// <summary>
 /// Represents the result of retrieving a user by their unique identifier.

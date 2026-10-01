@@ -1,6 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
+namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 
 /// <summary>
 /// Represents a query to retrieve a user by their unique identifier.
@@ -11,4 +11,4 @@ namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
 /// a query handler that processes the request and provides the corresponding user data
 /// in the form of a <c>GetUserByIdResult</c>.
 /// </remarks>
-public record GetUserByIdQuery(Guid Id) : IQuery<GetUserByIdResult>;
+public abstract record GetUserByIdQuery(Guid Id) : IQuery<GetUserByIdResult>;

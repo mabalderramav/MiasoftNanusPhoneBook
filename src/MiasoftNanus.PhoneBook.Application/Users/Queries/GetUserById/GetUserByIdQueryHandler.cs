@@ -3,7 +3,7 @@ using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Users.Errors;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
+namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 
 /// <summary>
 /// Handles the query to retrieve a user by their unique identifier.
