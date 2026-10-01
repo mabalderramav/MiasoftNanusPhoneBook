@@ -3,7 +3,7 @@ using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.CreateUser;
+namespace MiasoftNanus.PhoneBook.Application.Users.Commands.CreateUser;
 
 /// <summary>
 /// Provides mapping functionality to convert a <see cref="CreateUserCommand"/>

@@ -1,7 +1,7 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
 using MiasoftNanus.PhoneBook.Domain.Shared;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.CreateUser;
+namespace MiasoftNanus.PhoneBook.Application.Users.Commands.CreateUser;
 
 /// <summary>
 /// Represents a command for creating a new user in the system.

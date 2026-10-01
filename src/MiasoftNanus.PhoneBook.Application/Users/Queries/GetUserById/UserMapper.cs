@@ -1,6 +1,6 @@
 ﻿using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.GetUserById;
+namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 
 /// <summary>
 /// Provides a mapping utility for converting a User entity into a GetUserByIdResult record.

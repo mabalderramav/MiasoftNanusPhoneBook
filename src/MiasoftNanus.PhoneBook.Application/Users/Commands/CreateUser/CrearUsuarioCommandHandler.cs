@@ -4,10 +4,10 @@ using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Errors;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
-using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
+using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 
-namespace MiasoftNanus.PhoneBook.Application.Users.CreateUser;
+namespace MiasoftNanus.PhoneBook.Application.Users.Commands.CreateUser;
 
 /// <summary>
 /// Handles the execution of the <see cref="CreateUserCommand"/>.
