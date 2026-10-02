@@ -1,4 +1,5 @@
-﻿using MiasoftNanus.PhoneBook.WebApi.Config;
+﻿using System.Text.Json.Serialization;
+using MiasoftNanus.PhoneBook.WebApi.Config;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Extensions;
 
@@ -22,5 +23,9 @@ public static class AppConfigBuilderExtensions
         IConfiguration configuration)
     {
         services.Configure<ApiConfig>(configuration.GetSection("API"));
+        services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
     }
 }
