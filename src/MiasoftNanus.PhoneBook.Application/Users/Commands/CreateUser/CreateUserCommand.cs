@@ -11,7 +11,7 @@ namespace MiasoftNanus.PhoneBook.Application.Users.Commands.CreateUser;
 /// credentials, location data, and role assignment. It adheres to the principles of the CQRS pattern and is used
 /// to trigger the creation of a new user entity within the application.
 /// </remarks>
-public record CreateUserCommand(
+public abstract record CreateUserCommand(
     string FirstName,
     string LastName,
     string Password,
