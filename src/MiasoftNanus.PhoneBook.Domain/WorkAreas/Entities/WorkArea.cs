@@ -22,13 +22,13 @@ public class WorkArea : Entity
         Code = string.Empty;
         Name = string.Empty;
         Description = null;
-        Workstation = null;
+        Workstations = null;
     }
 
     public required string Code { get; init; }
     public required string Name { get; init; }
     public string? Description { get; set; }
-    public Workstation? Workstation { get; set; }
+    public ICollection<Workstation>? Workstations { get; set; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="WorkArea"/> class with the specified attributes
