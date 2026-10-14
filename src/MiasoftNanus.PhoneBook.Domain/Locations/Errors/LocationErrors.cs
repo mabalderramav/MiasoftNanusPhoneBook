@@ -10,11 +10,11 @@ namespace MiasoftNanus.PhoneBook.Domain.Locations.Errors;
 public static class LocationErrors
 {
     public static Error CodeCannotBeNullOrWhitespace =>
-        new Error("WorkAreaErrors.CodeCannotBeNullOrWhitespace", "Code cannot be null or whitespace."
+        new Error("LocationErrors.CodeCannotBeNullOrWhitespace", "Code cannot be null or whitespace."
         );
 
     public static Error DescriptionCannotBeNullOrWhitespace =>
-        new Error("WorkAreaErrors.DescriptionCannotBeNullOrWhitespace",
+        new Error("LocationErrors.DescriptionCannotBeNullOrWhitespace",
             "Description cannot be null or whitespace."
         );
 }

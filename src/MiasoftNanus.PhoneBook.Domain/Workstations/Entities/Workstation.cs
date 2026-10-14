@@ -21,14 +21,14 @@ public class Workstation : Entity
         Name = string.Empty;
         Description = null;
         WorkAreaId = Guid.Empty;
-        WorkAreas = new List<WorkArea>();
+        WorkArea = null;
     }
 
     public required string Code { get; init; }
     public required string Name { get; init; }
     public string? Description { get; set; }
-    public Guid WorkAreaId { get; set; }
-    public ICollection<WorkArea> WorkAreas { get; set; }
+    public Guid? WorkAreaId { get; set; }
+    public WorkArea? WorkArea { get; set; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="Workstation"/> class.
