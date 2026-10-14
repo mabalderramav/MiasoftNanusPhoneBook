@@ -1,4 +1,5 @@
 ﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Locations.Errors;
 
 namespace MiasoftNanus.PhoneBook.Domain.Locations.Entities;
@@ -12,10 +13,12 @@ public class Location : Entity
     {
         Code = string.Empty;
         Description = string.Empty;
+        Agendas = null;
     }
 
     public required string Code { get; init; }
-    public string Description { get; init; }
+    public required string Description { get; init; }
+    public ICollection<Agenda>? Agendas { get; init; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="Location"/> class with the specified code and description.
