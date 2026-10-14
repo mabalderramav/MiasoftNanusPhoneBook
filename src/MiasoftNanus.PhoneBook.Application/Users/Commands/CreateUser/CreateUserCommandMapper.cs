@@ -1,5 +1,6 @@
 ﻿using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
+using MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 
@@ -18,13 +19,13 @@ public static class CreateUserCommandMapper
     /// </summary>
     /// <param name="request">The command containing the user details to be mapped.</param>
     /// <param name="password">The user's password wrapped in a <see cref="ObjectValues.Password"/> object.</param>
-    /// <param name="email">The user's email wrapped in an <see cref="ObjectValues.Email"/> object.</param>
+    /// <param name="email">The user's email wrapped in an <see cref="Email"/> object.</param>
     /// <param name="profile">The profile data of the user.</param>
     /// <param name="dateTimeProvider">An implementation of <see cref="IDateTimeProvider"/> to get the current time.</param>
     /// <returns>An instance of <see cref="UserCreationData"/> containing the mapped user information.</returns>
     public static UserCreationData MapToUserCreationData(this CreateUserCommand request,
         ObjectValues.Password password,
-        ObjectValues.Email email,
+        Email email,
         Profile profile,
         IDateTimeProvider dateTimeProvider)
     {

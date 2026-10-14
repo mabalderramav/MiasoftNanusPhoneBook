@@ -1,4 +1,5 @@
 using MiasoftNanus.PhoneBook.Domain.Shared;
+using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 

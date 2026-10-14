@@ -1,8 +1,10 @@
 using MiasoftNanus.PhoneBook.Domain.Shared;
+using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Email = MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues.Email;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Users;
 
