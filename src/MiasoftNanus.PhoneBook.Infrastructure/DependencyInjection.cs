@@ -3,10 +3,12 @@ using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
+using MiasoftNanus.PhoneBook.Domain.WorkAreas.Repositories;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Email;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Infrastructure.Profiles;
 using MiasoftNanus.PhoneBook.Infrastructure.Users;
+using MiasoftNanus.PhoneBook.Infrastructure.WorkAreas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,6 +52,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
+        services.AddScoped<IWorkAreaRepository, WorkAreaRepository>();
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
 

@@ -27,8 +27,8 @@ public class WorkArea : Entity
 
     public required string Code { get; init; }
     public required string Name { get; init; }
-    public string? Description { get; set; }
-    public ICollection<Workstation>? Workstations { get; set; }
+    public string? Description { get; init; }
+    public ICollection<Workstation>? Workstations { get; init; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="WorkArea"/> class with the specified attributes
@@ -44,6 +44,7 @@ public class WorkArea : Entity
     /// </returns>
     public static Result<WorkArea> Create(string code, string name, string? description)
     {
+        // Validate required fields.
         if (string.IsNullOrWhiteSpace(code))
         {
             return Result.Failure<WorkArea>(WorkAreaErrors.CodeCannotBeNullOrWhitespace);
@@ -53,13 +54,17 @@ public class WorkArea : Entity
         {
             return Result.Failure<WorkArea>(WorkAreaErrors.NameCannotBeNullOrWhitespace);
         }
-
-        return new WorkArea()
+        
+        // Create a new WorkArea instance with the provided attributes.
+        var workArea = new WorkArea()
         {
             Id = Guid.NewGuid(),
             Code = code,
             Name = name,
             Description = description
         };
+
+        // Return a successful result containing the newly created WorkArea instance.
+        return Result.Success(workArea);
     }
 }
