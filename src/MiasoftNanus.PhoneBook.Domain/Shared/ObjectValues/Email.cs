@@ -1,8 +1,8 @@
+using System.Text.RegularExpressions;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Users.Errors;
-using System.Text.RegularExpressions;
 
-namespace MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
+namespace MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues;
 
 /// <summary>
 /// Represents an immutable value object for an email address.

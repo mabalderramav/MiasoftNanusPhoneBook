@@ -3,6 +3,7 @@ using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Errors;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
+using MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
 using ObjectValues = MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
@@ -55,7 +56,7 @@ internal sealed class CreateUserCommandHandler(
         if (passwordResult.IsFailure)
             return Result.Failure<Guid>(passwordResult.Error);
 
-        var emailResult = ObjectValues.Email.Create(request.Email);
+        var emailResult = Email.Create(request.Email);
 
         if (emailResult.IsFailure)
             return Result.Failure<Guid>(emailResult.Error);

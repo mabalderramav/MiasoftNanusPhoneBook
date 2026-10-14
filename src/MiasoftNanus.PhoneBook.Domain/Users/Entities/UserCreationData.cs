@@ -1,5 +1,7 @@
 using MiasoftNanus.PhoneBook.Domain.Shared;
+using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
+using Email = MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues.Email;
 
 namespace MiasoftNanus.PhoneBook.Domain.Users.Entities;
 

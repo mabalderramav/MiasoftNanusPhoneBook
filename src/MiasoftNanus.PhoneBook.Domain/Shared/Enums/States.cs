@@ -1,4 +1,4 @@
-namespace MiasoftNanus.PhoneBook.Domain.Shared;
+namespace MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 
 /// <summary>
 /// Represents the states an entity can have within the system.
