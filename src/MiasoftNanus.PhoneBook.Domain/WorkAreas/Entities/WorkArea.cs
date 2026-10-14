@@ -1,5 +1,6 @@
 ﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.WorkAreas.Errors;
+using MiasoftNanus.PhoneBook.Domain.Workstations.Entities;
 
 namespace MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities;
 
@@ -21,11 +22,13 @@ public class WorkArea : Entity
         Code = string.Empty;
         Name = string.Empty;
         Description = null;
+        Workstation = null;
     }
 
     public required string Code { get; init; }
     public required string Name { get; init; }
     public string? Description { get; set; }
+    public Workstation? Workstation { get; set; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="WorkArea"/> class with the specified attributes
