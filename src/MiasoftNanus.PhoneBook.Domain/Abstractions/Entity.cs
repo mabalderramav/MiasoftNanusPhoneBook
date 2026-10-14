@@ -25,7 +25,7 @@ public abstract class Entity
     /// can be uniquely identified across the system. It is assigned a value during the creation
     /// of the entity and remains immutable.
     /// </remarks>
-    public Guid Id { get; init; }
+    public Guid Id { get; protected init; }
 
     private readonly List<IDomainEvent> _domainEvents = [];
 

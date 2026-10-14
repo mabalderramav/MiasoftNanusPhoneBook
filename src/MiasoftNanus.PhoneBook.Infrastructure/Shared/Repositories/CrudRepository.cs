@@ -11,7 +11,7 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Shared.Repositories;
 /// <typeparam name="T">
 /// The type of the entity that extends the <see cref="Entity"/> base class.
 /// </typeparam>
-internal abstract class Repository<T>(AppDbContext appDbContext)
+public abstract class CrudRepository<T>(AppDbContext appDbContext)
     where T : Entity
 {
     protected readonly AppDbContext AppDbContext = appDbContext;
@@ -19,9 +19,6 @@ internal abstract class Repository<T>(AppDbContext appDbContext)
     /// <summary>
     /// Asynchronously retrieves an entity of type <typeparamref name="T"/> from the database by its unique identifier.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the entity that extends the <see cref="Entity"/> base class.
-    /// </typeparam>
     /// <param name="id">
     /// The unique identifier of the entity to retrieve.
     /// </param>
@@ -38,11 +35,24 @@ internal abstract class Repository<T>(AppDbContext appDbContext)
     }
 
     /// <summary>
+    /// Asynchronously retrieves all entities of type <typeparamref name="T"/> from the database.
+    /// </summary>
+    /// <param name="cancellationToken">
+    /// A token to observe while waiting for the task to complete. The default value is
+    /// <see cref="CancellationToken.None"/>.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a collection of entities of type
+    /// <typeparamref name="T"/>.
+    /// </returns>
+    public async Task<ICollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await AppDbContext.Set<T>().AsNoTracking().ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
     /// Adds a new entity of type <typeparamref name="T"/> to the database context.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the entity that extends the <see cref="Entity"/> base class.
-    /// </typeparam>
     /// <param name="entity">
     /// The entity of type <typeparamref name="T"/> to be added to the database context.
     /// </param>
@@ -54,9 +64,6 @@ internal abstract class Repository<T>(AppDbContext appDbContext)
     /// <summary>
     /// Updates the specified entity of type <typeparamref name="T"/> in the database.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the entity that extends the <see cref="Entity"/> base class.
-    /// </typeparam>
     /// <param name="entity">
     /// The entity of type <typeparamref name="T"/> to update in the database.
     /// </param>
@@ -68,9 +75,6 @@ internal abstract class Repository<T>(AppDbContext appDbContext)
     /// <summary>
     /// Removes the specified entity of type <typeparamref name="T"/> from the database context.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the entity that extends the <see cref="Entity"/> base class.
-    /// </typeparam>
     /// <param name="entity">
     /// The entity to be removed from the database context.
     /// </param>

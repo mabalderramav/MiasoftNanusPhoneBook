@@ -11,7 +11,7 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Profiles;
 /// using the application's database context.
 /// </summary>
 internal sealed class ProfileRepository(AppDbContext appDbContext)
-    : Repository<Profile>(appDbContext), IProfileRepository
+    : CrudRepository<Profile>(appDbContext), IProfileRepository
 {
     /// <summary>
     /// Retrieves a profile entity by its name.
