@@ -8,6 +8,14 @@ using Email = MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues.Email;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Users;
 
+/// <summary>
+/// Configures the database schema and relationships for the <see cref="User"/> entity.
+/// </summary>
+/// <remarks>
+/// The <c>UserConfiguration</c> class is used to define the Entity Framework Core configuration
+/// for the <see cref="User"/> entity, which includes setting up entity relationships, primary
+/// keys, property configurations, and other database-level rules.
+/// </remarks>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     void IEntityTypeConfiguration<User>.Configure(EntityTypeBuilder<User> builder)
