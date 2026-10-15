@@ -34,7 +34,7 @@ try
 
     await app.RunAsync();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException)
 {
     logger.Fatal(ex, "An unhandled exception has occurred in the middleware of the application");
 }
