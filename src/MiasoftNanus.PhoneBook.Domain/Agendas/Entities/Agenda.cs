@@ -38,19 +38,19 @@ public class Agenda : Entity
 
     public required string Code { get; init; }
     public required string FullName { get; init; }
-    public Email? Email { get; set; }
+    public Email? Email { get; init; }
     public required bool Enabled { get; init; }
-    public string? ImagePath { get; set; }
-    public string? DirectLine { get; set; }
-    public string? Internal { get; set; }
-    public string? Corporate { get; set; }
-    public string? DirectAccess { get; set; }
-    public Guid? WorkstationId { get; set; }
-    public Workstation? Workstation { get; set; }
-    public Guid? LocationId { get; set; }
-    public Location? Location { get; set; }
-    public Guid? UserIdCreated { get; set; }
-    public User? UserCreated { get; set; }
+    public string? ImagePath { get; init; }
+    public string? DirectLine { get; init; }
+    public string? Internal { get; init; }
+    public string? Corporate { get; init; }
+    public string? DirectAccess { get; init; }
+    public Guid? WorkstationId { get; init; }
+    public Workstation? Workstation { get; init; }
+    public Guid? LocationId { get; init; }
+    public Location? Location { get; init; }
+    public Guid? UserIdCreated { get; init; }
+    public User? UserCreated { get; init; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="Agenda"/> class based on the provided data.

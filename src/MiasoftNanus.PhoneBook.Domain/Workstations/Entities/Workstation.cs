@@ -1,4 +1,5 @@
 ﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Workstations.Errors;
 
@@ -22,6 +23,7 @@ public class Workstation : Entity
         Description = null;
         WorkAreaId = Guid.Empty;
         WorkArea = null;
+        Agendas = null;
     }
 
     public required string Code { get; init; }
@@ -29,6 +31,7 @@ public class Workstation : Entity
     public string? Description { get; init; }
     public Guid? WorkAreaId { get; init; }
     public WorkArea? WorkArea { get; init; }
+    public ICollection<Agenda>? Agendas { get; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="Workstation"/> class.

@@ -1,4 +1,5 @@
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.Domain.Shared;
 using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
@@ -57,6 +58,7 @@ public class User : Entity
     public DateTime DateOfLastChange { get; set; }
     public Guid ProfileId { get; set; }
     public Profile? Profile { get; set; }
+    public ICollection<Agenda>? Agendas { get; init; }
 
     /// <summary>
     /// Creates a new <see cref="User"/> instance based on the provided user creation data.
