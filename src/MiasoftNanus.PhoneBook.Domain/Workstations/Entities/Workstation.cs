@@ -26,9 +26,9 @@ public class Workstation : Entity
 
     public required string Code { get; init; }
     public required string Name { get; init; }
-    public string? Description { get; set; }
-    public Guid? WorkAreaId { get; set; }
-    public WorkArea? WorkArea { get; set; }
+    public string? Description { get; init; }
+    public Guid? WorkAreaId { get; init; }
+    public WorkArea? WorkArea { get; init; }
 
     /// <summary>
     /// Creates a new instance of the <see cref="Workstation"/> class.
