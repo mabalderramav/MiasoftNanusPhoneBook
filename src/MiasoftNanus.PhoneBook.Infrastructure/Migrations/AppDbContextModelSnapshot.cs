@@ -22,6 +22,123 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Agendas.Entities.Agenda", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Corporate")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("corporate");
+
+                    b.Property<string>("DirectAccess")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("direct_access");
+
+                    b.Property<string>("DirectLine")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("direct_line");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean")
+                        .HasColumnName("enabled");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("full_name");
+
+                    b.Property<string>("ImagePath")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("image_path");
+
+                    b.Property<string>("Internal")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("internal");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("location_id");
+
+                    b.Property<Guid>("UserIdCreated")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id_created");
+
+                    b.Property<Guid>("WorkstationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("workstation_id");
+
+                    b.Property<uint>("version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id")
+                        .HasName("pk_agendas");
+
+                    b.HasIndex("LocationId")
+                        .HasDatabaseName("ix_agendas_location_id");
+
+                    b.HasIndex("UserIdCreated")
+                        .HasDatabaseName("ix_agendas_user_id_created");
+
+                    b.HasIndex("WorkstationId")
+                        .HasDatabaseName("ix_agendas_workstation_id");
+
+                    b.ToTable("agendas", (string)null);
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Locations.Entities.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
+
+                    b.Property<uint>("version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id")
+                        .HasName("pk_locations");
+
+                    b.ToTable("locations", (string)null);
+                });
+
             modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Profiles.Entities.Profile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -118,6 +235,115 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Migrations
                     b.ToTable("phonebook_users", (string)null);
                 });
 
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities.WorkArea", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<uint>("version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id")
+                        .HasName("pk_work_areas");
+
+                    b.ToTable("work_areas", (string)null);
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Workstations.Entities.Workstation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("WorkAreaId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("work_area_id");
+
+                    b.Property<uint>("version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id")
+                        .HasName("pk_workstations");
+
+                    b.HasIndex("WorkAreaId")
+                        .HasDatabaseName("ix_workstations_work_area_id");
+
+                    b.ToTable("workstations", (string)null);
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Agendas.Entities.Agenda", b =>
+                {
+                    b.HasOne("MiasoftNanus.PhoneBook.Domain.Locations.Entities.Location", "Location")
+                        .WithMany("Agendas")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_agendas_location_location_id");
+
+                    b.HasOne("MiasoftNanus.PhoneBook.Domain.Users.Entities.User", "UserCreated")
+                        .WithMany("Agendas")
+                        .HasForeignKey("UserIdCreated")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_agendas_user_user_id_created");
+
+                    b.HasOne("MiasoftNanus.PhoneBook.Domain.Workstations.Entities.Workstation", "Workstation")
+                        .WithMany("Agendas")
+                        .HasForeignKey("WorkstationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_agendas_workstation_workstation_id");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("UserCreated");
+
+                    b.Navigation("Workstation");
+                });
+
             modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Users.Entities.User", b =>
                 {
                     b.HasOne("MiasoftNanus.PhoneBook.Domain.Profiles.Entities.Profile", "Profile")
@@ -170,6 +396,38 @@ namespace MiasoftNanus.PhoneBook.Infrastructure.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Workstations.Entities.Workstation", b =>
+                {
+                    b.HasOne("MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities.WorkArea", "WorkArea")
+                        .WithMany("Workstations")
+                        .HasForeignKey("WorkAreaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_workstations_work_areas_work_area_id");
+
+                    b.Navigation("WorkArea");
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Locations.Entities.Location", b =>
+                {
+                    b.Navigation("Agendas");
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Users.Entities.User", b =>
+                {
+                    b.Navigation("Agendas");
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities.WorkArea", b =>
+                {
+                    b.Navigation("Workstations");
+                });
+
+            modelBuilder.Entity("MiasoftNanus.PhoneBook.Domain.Workstations.Entities.Workstation", b =>
+                {
+                    b.Navigation("Agendas");
                 });
 #pragma warning restore 612, 618
         }
