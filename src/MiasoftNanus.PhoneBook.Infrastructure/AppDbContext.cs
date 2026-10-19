@@ -1,5 +1,4 @@
-﻿using MediatR;
-using MiasoftNanus.PhoneBook.Domain.Abstractions;
+﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure;
@@ -84,7 +83,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IPublisher pub
         {
             try
             {
-                await publisher.Publish(domainEvent, cancellationToken);
+                await publisher.PublishAsync(domainEvent, cancellationToken);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
