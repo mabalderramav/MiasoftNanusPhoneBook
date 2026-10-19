@@ -1,4 +1,4 @@
-using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
+using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Errors;
@@ -42,9 +42,10 @@ internal sealed class CreateUserCommandHandler(
     IProfileRepository profileRepository,
     IUnitOfWork unitOfWork,
     IDateTimeProvider dateTimeProvider)
-    : ICommandHandler<CreateUserCommand, Guid>
+    : ICommandHandler<CreateUserCommand, Result<Guid>>
 {
-    public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> HandleAsync(
+        CreateUserCommand request, CancellationToken cancellationToken = default)
     {
         var profileResult = await profileRepository.GetByNameAsync(request.RoleName, cancellationToken);
 
@@ -60,21 +61,21 @@ internal sealed class CreateUserCommandHandler(
 
         if (emailResult.IsFailure)
             return Result.Failure<Guid>(emailResult.Error);
-        
+
         var userDataCreation = request.MapToUserCreationData(
-            passwordResult.Value, 
-            emailResult.Value, 
-            profileResult, 
+            passwordResult.Value,
+            emailResult.Value,
+            profileResult,
             dateTimeProvider);
-        
-        var usuarioResult = User.Create(userDataCreation);
 
-        if (usuarioResult.IsFailure)
-            return Result.Failure<Guid>(usuarioResult.Error);
+        var userResult = User.Create(userDataCreation);
 
-        userRepository.Add(usuarioResult.Value);
+        if (userResult.IsFailure)
+            return Result.Failure<Guid>(userResult.Error);
+
+        userRepository.Add(userResult.Value);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(usuarioResult.Value.Id);
+        return Result.Success(userResult.Value.Id);
     }
 }

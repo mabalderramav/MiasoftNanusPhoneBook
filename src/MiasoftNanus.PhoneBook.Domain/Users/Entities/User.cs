@@ -1,7 +1,6 @@
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
-using MiasoftNanus.PhoneBook.Domain.Shared;
 using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 using MiasoftNanus.PhoneBook.Domain.Users.Events;
 using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
@@ -42,22 +41,22 @@ public class User : Entity
         DateOfLastChange = data.DateOfLastChange;
         ProfileId = data.ProfileId;
     }
-    
+
     protected User()
     {
     }
 
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public Password? Password { get; set; }
-    public Username? UserName { get; set; }
-    public DateTime Birthdate { get; set; }
-    public Email? Email { get; set; }
-    public Address? Address { get; set; }
-    public States? States { get; set; }
-    public DateTime DateOfLastChange { get; set; }
-    public Guid ProfileId { get; set; }
-    public Profile? Profile { get; set; }
+    public string? FirstName { get; init; }
+    public string? LastName { get; init; }
+    public Password? Password { get; init; }
+    public Username? UserName { get; init; }
+    public DateTime Birthdate { get; init; }
+    public Email? Email { get; init; }
+    public Address? Address { get; init; }
+    public States? States { get; init; }
+    public DateTime DateOfLastChange { get; init; }
+    public Guid ProfileId { get; init; }
+    public Profile? Profile { get; init; }
     public ICollection<Agenda>? Agendas { get; init; }
 
     /// <summary>
@@ -70,13 +69,13 @@ public class User : Entity
     /// </returns>
     public static Result<User> Create(UserCreationData data)
     {
-        var nombreUsuarioResult = UsernameServices.GenerateUsername(data.FirstName, data.LastName);
-        if (nombreUsuarioResult.IsFailure)
+        var usernameResult = UsernameServices.GenerateUsername(data.FirstName, data.LastName);
+        if (usernameResult.IsFailure)
         {
-            return Result.Failure<User>(nombreUsuarioResult.Error);
+            return Result.Failure<User>(usernameResult.Error);
         }
 
-        var user = new User(Guid.NewGuid(), data, nombreUsuarioResult.Value);
+        var user = new User(Guid.NewGuid(), data, usernameResult.Value);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(user.Id));
         return Result.Success(user);
