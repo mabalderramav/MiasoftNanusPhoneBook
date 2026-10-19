@@ -1,4 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
+using MiasoftNanus.PhoneBook.Application.Abstractions.Notifications;
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MiasoftNanus.PhoneBook.Application;
@@ -11,18 +13,23 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IDispatcher, Dispatcher>();
+        services.AddScoped<IPublisher, Publisher>();
 
-        // Register all command and query handlers dynamically.
-        var interfacesDeHandler = new[] { typeof(ICommandHandler<,>), typeof(IQueryHandler<,>) };
+        // Register all command, query, and notification handlers dynamically.
+        var handlerInterfaces = new[]
+        {
+            typeof(ICommandHandler<,>),
+            typeof(IQueryHandler<,>),
+            typeof(INotificationHandler<>)
+        };
 
-        // Use LINQ to find all classes that implement ICommandHandler<, >
-        // or IQueryHandler<, > and register them with the DI container.
+        // Find all concrete classes that implement one of the supported handler interfaces.
         var registeredHandlers =
             from typeInfo in typeof(DependencyInjection).Assembly.GetTypes()
             where typeInfo is { IsClass: true, IsAbstract: false, IsGenericTypeDefinition: false }
             from implementedInterface in typeInfo.GetInterfaces()
             where implementedInterface.IsGenericType
-                  && interfacesDeHandler.Contains(implementedInterface.GetGenericTypeDefinition())
+                  && handlerInterfaces.Contains(implementedInterface.GetGenericTypeDefinition())
             select (implementedInterface, typeInfo);
 
         // Register each handler interface and its corresponding implementation type with the DI container.
