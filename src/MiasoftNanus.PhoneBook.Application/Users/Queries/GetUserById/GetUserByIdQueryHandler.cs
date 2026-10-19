@@ -1,4 +1,4 @@
-using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
+using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Users.Errors;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
@@ -18,9 +18,10 @@ namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 /// Thrown when the user with the provided identifier does not exist in the system.
 /// </exception>
 internal sealed class GetUserByIdQueryHandler(IUserRepository userRepository)
-    : IQueryHandler<GetUserByIdQuery, GetUserByIdResult>
+    : IQueryHandler<GetUserByIdQuery, Result<GetUserByIdResult>>
 {
-    public async Task<Result<GetUserByIdResult>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetUserByIdResult>> HandleAsync(
+        GetUserByIdQuery request, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(request.Id, cancellationToken);
         if (user is null)
