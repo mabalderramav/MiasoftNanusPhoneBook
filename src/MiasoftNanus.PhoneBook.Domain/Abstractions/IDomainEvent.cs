@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace MiasoftNanus.PhoneBook.Domain.Abstractions;
 
 /// <summary>
