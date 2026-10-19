@@ -1,17 +1,13 @@
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 
 namespace MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 
 /// <summary>
-/// Defines the contract for repository operations related to the <c>Profile</c> entity in the domain.
+/// Represents a repository interface for managing <c>Profile</c> entities.
+/// Provides methods for CRUD operations and specific profile-related queries.
 /// </summary>
-/// <remarks>
-/// The <c>IProfileRepository</c> interface provides methods to interact with and manage
-/// <c>Profile</c> entities, specifically for retrieving profiles based on their unique name.
-/// This repository abstraction supports asynchronous operations and leverages cancellation tokens
-/// to allow cooperative cancellation of tasks.
-/// </remarks>
-public interface IProfileRepository
+public interface IProfileRepository : IGenericRepository<Profile, Guid>
 {
     /// <summary>
     /// Asynchronously retrieves a <c>Profile</c> entity by its unique name.
