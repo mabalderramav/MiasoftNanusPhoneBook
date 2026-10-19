@@ -1,4 +1,5 @@
-using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
+using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 
@@ -11,4 +12,4 @@ namespace MiasoftNanus.PhoneBook.Application.Users.Queries.GetUserById;
 /// a query handler that processes the request and provides the corresponding user data
 /// in the form of a <c>GetUserByIdResult</c>.
 /// </remarks>
-public abstract record GetUserByIdQuery(Guid Id) : IQuery<GetUserByIdResult>;
+public abstract record GetUserByIdQuery(Guid Id) : IQuery<Result<GetUserByIdResult>>;
