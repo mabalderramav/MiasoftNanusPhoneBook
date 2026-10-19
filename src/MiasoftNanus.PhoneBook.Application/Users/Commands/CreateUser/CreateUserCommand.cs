@@ -1,5 +1,5 @@
-using MiasoftNanus.PhoneBook.Application.Abstractions.Messaging;
-using MiasoftNanus.PhoneBook.Domain.Shared;
+using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.Commands.CreateUser;
@@ -25,4 +25,4 @@ public abstract record CreateUserCommand(
     string Street,
     States States,
     string RoleName
-) : ICommand<Guid>;
+) : ICommand<Result<Guid>>;
