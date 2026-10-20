@@ -12,4 +12,12 @@ public static class ProfileErrors
     public static Error ProfileNotFound =>
         new Error("ProfileErrors.ProfileNotFound", "The profile was not found."
         );
+
+    public static Error ProfileNameCannotBeNullOrWhitespace =>
+        new Error("ProfileErrors.ProfileNameCannotBeNullOrWhitespace",
+            "The profile name cannot be null or whitespace.");
+    
+    public static Error ProfilesNotFound =>
+        new Error("ProfileErrors.ProfilesNotFound", "The profiles were not found."
+        );
 }
