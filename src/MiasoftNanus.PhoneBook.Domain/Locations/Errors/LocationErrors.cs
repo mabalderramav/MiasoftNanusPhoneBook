@@ -9,6 +9,14 @@ namespace MiasoftNanus.PhoneBook.Domain.Locations.Errors;
 /// </summary>
 public static class LocationErrors
 {
+    public static Error LocationNotFound =>
+        new Error("LocationErrors.LocationNotFound", "The location was not found."
+        );
+
+    public static Error LocationsNotFound =>
+        new Error("LocationErrors.LocationsNotFound", "The locations were not found."
+        );
+
     public static Error CodeCannotBeNullOrWhitespace =>
         new Error("LocationErrors.CodeCannotBeNullOrWhitespace", "Code cannot be null or whitespace."
         );

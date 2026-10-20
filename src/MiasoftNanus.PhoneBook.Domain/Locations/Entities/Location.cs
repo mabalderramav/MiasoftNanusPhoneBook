@@ -9,15 +9,15 @@ namespace MiasoftNanus.PhoneBook.Domain.Locations.Entities;
 /// </summary>
 public class Location : Entity
 {
-    private Location()
+    private Location(Guid id, string code, string description)
     {
-        Code = string.Empty;
-        Description = string.Empty;
-        Agendas = null;
+        Id = id;
+        Code = code;
+        Description = description;
     }
 
-    public required string Code { get; init; }
-    public required string Description { get; init; }
+    public string Code { get; private set; }
+    public string Description { get; private set; }
     public ICollection<Agenda>? Agendas { get; init; }
 
     /// <summary>
@@ -30,21 +30,40 @@ public class Location : Entity
     /// or an error if the inputs are invalid.</returns>
     public static Result<Location> Create(string code, string description)
     {
+        var validationResult = Validate(code, description);
+        return validationResult.IsFailure
+            ? Result.Failure<Location>(validationResult.Error)
+            : Result.Success(new Location(Guid.CreateVersion7(), code, description));
+    }
+
+    /// <summary>
+    /// Updates the <see cref="Location"/> instance with the specified code and description.
+    /// </summary>
+    /// <param name="code">The new code for the location. Cannot be null or whitespace.</param>
+    /// <param name="description">The new description for the location. Cannot be null or whitespace.</param>
+    /// <returns>
+    /// A <see cref="Result"/> indicating the success or failure of the update operation. If unsuccessful,
+    /// the result will contain the corresponding error.
+    /// </returns>
+    public Result Update(string code, string description)
+    {
+        var validationResult = Validate(code, description);
+        if (validationResult.IsFailure)
+            return validationResult;
+
+        Code = code;
+        Description = description;
+        return Result.Success();
+    }
+
+    private static Result Validate(string code, string description)
+    {
         if (string.IsNullOrWhiteSpace(code))
-        {
-            return Result.Failure<Location>(LocationErrors.CodeCannotBeNullOrWhitespace);
-        }
+            return Result.Failure(LocationErrors.CodeCannotBeNullOrWhitespace);
 
         if (string.IsNullOrWhiteSpace(description))
-        {
-            return Result.Failure<Location>(LocationErrors.DescriptionCannotBeNullOrWhitespace);
-        }
+            return Result.Failure(LocationErrors.DescriptionCannotBeNullOrWhitespace);
 
-        return Result.Success(new Location()
-        {
-            Id = Guid.NewGuid(),
-            Code = code,
-            Description = description
-        });
+        return Result.Success();
     }
 }

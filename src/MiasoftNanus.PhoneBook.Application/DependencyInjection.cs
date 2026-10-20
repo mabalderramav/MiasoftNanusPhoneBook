@@ -1,7 +1,9 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Notifications;
+using MiasoftNanus.PhoneBook.Application.Locations.Services;
 using MiasoftNanus.PhoneBook.Application.Profiles.Services;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Locations.Services;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,7 @@ public static class DependencyInjection
 
         // Register application services.
         services.AddScoped<IProfileService, ProfileService>();
+        services.AddScoped<ILocationService, LocationService>();
 
         // Register all command, query, and notification handlers dynamically.
         var handlerInterfaces = new[]
