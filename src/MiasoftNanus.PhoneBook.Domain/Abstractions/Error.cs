@@ -9,15 +9,10 @@ public record Error(
     string Message
 )
 {
-    /// <summary>
-    /// Represents an empty or undefined error state.
-    /// This error has no code or message, signifying the absence of an error.
-    /// </summary>
     public static Error None => new(string.Empty, string.Empty);
 
-    /// <summary>
-    /// Represents an error indicating that a value is null where it is not allowed.
-    /// This error is typically used to enforce non-null value constraints.
-    /// </summary>
     public static Error NullValue => new("Error.NullValue", "The value cannot be null.");
+
+    public static Error CannotSaveChanges => new("Error.CannotSaveChanges",
+        "Cannot save changes to the database.");
 }
