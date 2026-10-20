@@ -31,7 +31,8 @@ public abstract class CrudRepository<T>(AppDbContext appDbContext)
     /// </returns>
     public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await AppDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        // Tracked so the concurrency token (xmin shadow property) is loaded for later Update/Remove calls
+        return await AppDbContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
     /// <summary>

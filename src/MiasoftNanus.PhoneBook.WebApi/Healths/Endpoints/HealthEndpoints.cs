@@ -1,7 +1,7 @@
 ﻿using MiasoftNanus.PhoneBook.WebApi.Config;
 using Microsoft.Extensions.Options;
 
-namespace MiasoftNanus.PhoneBook.WebApi.Endpoints;
+namespace MiasoftNanus.PhoneBook.WebApi.Healths.Endpoints;
 
 /// <summary>
 /// Provides a collection of endpoints related to health check functionalities within the API.
