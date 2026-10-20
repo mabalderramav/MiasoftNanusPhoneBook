@@ -1,4 +1,5 @@
 ﻿using MiasoftNanus.PhoneBook.WebApi.Healths.Endpoints;
+using MiasoftNanus.PhoneBook.WebApi.Locations.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.Profiles.Endpoints;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Extensions;
@@ -20,5 +21,6 @@ public static class EndpointsBuilderExtensions
         endpoints.MapGet("/", () => "Hello World! - Oscar Martin Balderrama Vaca - Miasoft Nanus PhoneBook API");
         endpoints.MapHealthEndpoints();
         endpoints.MapProfileEndpoints();
+        endpoints.MapLocationEndpoints();
     }
 }
