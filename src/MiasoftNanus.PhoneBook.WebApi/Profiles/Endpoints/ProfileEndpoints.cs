@@ -1,5 +1,4 @@
-﻿using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
-using MiasoftNanus.PhoneBook.Domain.Profiles.Services;
+﻿using MiasoftNanus.PhoneBook.Domain.Profiles.Services;
 using MiasoftNanus.PhoneBook.WebApi.Profiles.Dtos;
 using MiasoftNanus.PhoneBook.WebApi.Profiles.Mappers;
 
