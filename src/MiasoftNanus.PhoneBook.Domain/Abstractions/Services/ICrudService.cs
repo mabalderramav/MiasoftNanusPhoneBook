@@ -34,15 +34,16 @@ public interface ICrudService<T , in TId> where T : Entity
     /// <summary>
     /// Asynchronously updates an existing entity in the system.
     /// </summary>
+    /// <param name="id">The unique identifier of the entity to be updated.</param>
     /// <param name="entity">The entity with updated information.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A result containing the updated entity, or an error if the operation failed.</returns>
-    Task<Result<T>> UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    Task<Result<T>> UpdateAsync(TId id, T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously deletes an entity from the system by its unique identifier.
     /// </summary>
-    /// <param name="entity">The entity to be deleted.</param>
+    /// <param name="id">The unique identifier of the entity to be deleted.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    Task<Result> DeleteAsync(T entity, CancellationToken cancellationToken = default);
+    Task<Result> DeleteAsync(TId id, CancellationToken cancellationToken = default);
 }

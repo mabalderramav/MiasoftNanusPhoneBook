@@ -26,4 +26,8 @@
     <ProjectReference Include="..\MiasoftNanus.PhoneBook.Infrastructure\MiasoftNanus.PhoneBook.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Healths\" />
+  </ItemGroup>
+
 </Project>

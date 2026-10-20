@@ -41,17 +41,21 @@ public abstract class CrudCqrsService<T, TId>(IDispatcher dispatcher) : ICrudSer
     /// <summary>
     /// Builds the command that updates an existing entity of type <paramref name="entity"/>.
     /// </summary>
+    /// <param name="id">The unique identifier of the entity to be updated.</param>
     /// <param name="entity">The entity instance to be updated.</param>
     /// <returns>An implementation of <see cref="ICommand{T}"/> used to execute the update operation.</returns>
-    protected abstract ICommand<Result<T>> BuildUpdateCommand(T entity);
+    protected abstract ICommand<Result<T>> BuildUpdateCommand(TId id, T entity);
 
     /// <summary>
-    /// Builds the command that deletes the specified entity of type <paramref name="entity"/>.
+    /// Builds the command that deletes the specified entity of type <paramref>
+    ///     <name>entity</name>
+    /// </paramref>
+    /// .
     /// </summary>
-    /// <param name="entity">The entity instance to be deleted.</param>
+    /// <param name="id">The unique identifier of the entity to be deleted.</param>
     /// <returns>An implementation of <see cref="ICommand{TResult}"/> used to execute the delete operation,
     /// which returns a <see cref="Result"/> indicating the success or failure of the operation.</returns>
-    protected abstract ICommand<Result> BuildDeleteCommand(T entity);
+    protected abstract ICommand<Result> BuildDeleteCommand(TId id);
 
     public virtual Task<Result<T>> CreateAsync(T entity, CancellationToken cancellationToken = default) =>
         Dispatcher.SendCommandAsync(BuildCreateCommand(entity), cancellationToken);
@@ -62,9 +66,9 @@ public abstract class CrudCqrsService<T, TId>(IDispatcher dispatcher) : ICrudSer
     public virtual Task<Result<ICollection<T>>> GetAllAsync(CancellationToken cancellationToken = default) =>
         Dispatcher.SendQueryAsync(BuildGetAllQuery(), cancellationToken);
 
-    public virtual Task<Result<T>> UpdateAsync(T entity, CancellationToken cancellationToken = default) =>
-        Dispatcher.SendCommandAsync(BuildUpdateCommand(entity), cancellationToken);
+    public virtual Task<Result<T>> UpdateAsync(TId id, T entity, CancellationToken cancellationToken = default) =>
+        Dispatcher.SendCommandAsync(BuildUpdateCommand(id, entity), cancellationToken);
 
-    public virtual Task<Result> DeleteAsync(T entity, CancellationToken cancellationToken = default) =>
-        Dispatcher.SendCommandAsync(BuildDeleteCommand(entity), cancellationToken);
+    public virtual Task<Result> DeleteAsync(TId id, CancellationToken cancellationToken = default) =>
+        Dispatcher.SendCommandAsync(BuildDeleteCommand(id), cancellationToken);
 }

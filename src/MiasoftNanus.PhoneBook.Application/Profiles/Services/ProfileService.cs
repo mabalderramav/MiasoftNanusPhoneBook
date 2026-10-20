@@ -37,13 +37,13 @@ public class ProfileService(IDispatcher dispatcher) : CrudCqrsService<Profile, G
         return new GetProfileAllQuery();
     }
 
-    protected override ICommand<Result<Profile>> BuildUpdateCommand(Profile entity)
+    protected override ICommand<Result<Profile>> BuildUpdateCommand(Guid id, Profile entity)
     {
-        return new UpdateProfileCommand(entity.Id, entity.ProfileName, entity.Description);
+        return new UpdateProfileCommand(id, entity.ProfileName, entity.Description);
     }
 
-    protected override ICommand<Result> BuildDeleteCommand(Profile entity)
+    protected override ICommand<Result> BuildDeleteCommand(Guid id)
     {
-        return new DeleteProfileCommand(entity.Id);
+        return new DeleteProfileCommand(id);
     }
 }
