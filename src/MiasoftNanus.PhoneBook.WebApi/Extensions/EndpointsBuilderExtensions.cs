@@ -1,6 +1,7 @@
 ﻿using MiasoftNanus.PhoneBook.WebApi.Healths.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.Locations.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.Profiles.Endpoints;
+using MiasoftNanus.PhoneBook.WebApi.Users.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.WorkAreas.Endpoints;
 using MiasoftNanus.PhoneBook.WebApi.Workstations.Endpoints;
 
@@ -26,5 +27,6 @@ public static class EndpointsBuilderExtensions
         endpoints.MapLocationEndpoints();
         endpoints.MapWorkAreaEndpoints();
         endpoints.MapWorkstationEndpoints();
+        endpoints.MapUserEndpoints();
     }
 }
