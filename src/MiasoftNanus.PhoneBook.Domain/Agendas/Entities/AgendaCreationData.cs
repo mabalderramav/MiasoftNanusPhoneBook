@@ -1,22 +1,24 @@
-﻿using MiasoftNanus.PhoneBook.Domain.Shared.ObjectValues;
-
-namespace MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
+﻿namespace MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 
 /// <summary>
-/// Represents the data required to create an agenda entry in the system.
+/// Represents the data required to create or update an Agenda instance.
 /// </summary>
 /// <remarks>
-/// This record contains all necessary information for creating a new agenda entry, such as
-/// identification, contact information, and accessibility attributes. The properties in
-/// this record provide flexibility for detailed agenda creation while maintaining immutability.
+/// This class serves as a container for the raw agenda-related values. Value objects such as
+/// <see cref="Shared.ObjectValues.Email"/> are validated and built by the <see cref="Agenda"/> entity itself.
 /// </remarks>
-public record AgendaCreationData(
-    string Code,
-    string FullName,
-    Email? Email,
-    bool Enabled,
-    string? ImagePath,
-    string? DirectLine,
-    string? Internal,
-    string? Corporate,
-    string? DirectAccess);
+public sealed class AgendaCreationData
+{
+    public required string Code { get; init; }
+    public required string FullName { get; init; }
+    public required string Email { get; init; }
+    public required bool Enabled { get; init; }
+    public string? ImagePath { get; init; }
+    public string? DirectLine { get; init; }
+    public string? Internal { get; init; }
+    public string? Corporate { get; init; }
+    public string? DirectAccess { get; init; }
+    public required Guid WorkstationId { get; init; }
+    public required Guid LocationId { get; init; }
+    public required Guid UserIdCreated { get; init; }
+}
