@@ -45,12 +45,15 @@ public static class ProfileEndpoints
     }
 
     private static async Task<IResult> CreateProfile(
-        CrearUpdateProfileDto crearUpdateProfileDto,
+        CreateUpdateProfileDto createUpdateProfileDto,
         IProfileService profileService,
         CancellationToken cancellationToken)
     {
-        var profile = crearUpdateProfileDto.ToEntity();
-        var result = await profileService.CreateAsync(profile, cancellationToken);
+        var resultProfile = createUpdateProfileDto.ToEntity();
+        if(resultProfile.IsFailure)
+            return TypedResults.BadRequest(resultProfile.Error);
+
+        var result = await profileService.CreateAsync(resultProfile.Value, cancellationToken);
         return result.IsFailure
             ? TypedResults.BadRequest(result.Error)
             : TypedResults.Created($"/profiles/{result.Value.Id}", result.Value);
@@ -58,12 +61,15 @@ public static class ProfileEndpoints
 
     private static async Task<IResult> UpdateProfile(
         Guid id,
-        CrearUpdateProfileDto crearUpdateProfileDto,
+        CreateUpdateProfileDto createUpdateProfileDto,
         IProfileService profileService,
         CancellationToken cancellationToken)
     {
-        var profile = crearUpdateProfileDto.ToEntity();
-        var result = await profileService.UpdateAsync(id, profile, cancellationToken);
+        var resultProfile = createUpdateProfileDto.ToEntity();
+        if(resultProfile.IsFailure)
+            return TypedResults.BadRequest(resultProfile.Error);
+        
+        var result = await profileService.UpdateAsync(id, resultProfile.Value, cancellationToken);
         return result.IsFailure
             ? TypedResults.NotFound(result.Error)
             : TypedResults.Ok(result.Value);

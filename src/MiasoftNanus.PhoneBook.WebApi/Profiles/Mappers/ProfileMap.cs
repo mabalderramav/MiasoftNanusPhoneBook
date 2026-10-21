@@ -1,4 +1,5 @@
-﻿using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
+﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.WebApi.Profiles.Dtos;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Profiles.Mappers;
@@ -40,12 +41,14 @@ public static class ProfileMap
     }
 
     /// <summary>
-    /// Converts an instance of <see cref="CrearUpdateProfileDto"/> to an instance of <see cref="Profile"/>.
+    /// Converts an instance of <see cref="CreateUpdateProfileDto"/> to an instance of <see cref="Result{Profile}"/>.
     /// </summary>
-    /// <param name="crearUpdateProfileDto">The DTO containing the data for creating a new profile.</param>
-    /// <returns>A new instance of <see cref="Profile"/> containing the data from the DTO.</returns>
-    public static Profile ToEntity(this CrearUpdateProfileDto crearUpdateProfileDto)
+    /// <param name="createUpdateProfileDto">The <see cref="CreateUpdateProfileDto"/> containing the data
+    /// to create a <see cref="Profile"/> entity.</param>
+    /// <returns>A <see cref="Result{Profile}"/> containing the created <see cref="Profile"/> entity or an error
+    /// if creation fails.</returns>
+    public static Result<Profile> ToEntity(this CreateUpdateProfileDto createUpdateProfileDto)
     {
-        return Profile.Create(crearUpdateProfileDto.ProfileName, crearUpdateProfileDto.Description).Value;
+        return Profile.Create(createUpdateProfileDto.ProfileName, createUpdateProfileDto.Description);
     }
 }
