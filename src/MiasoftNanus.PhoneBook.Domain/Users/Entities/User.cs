@@ -2,6 +2,7 @@ using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Entities;
 using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
+using MiasoftNanus.PhoneBook.Domain.Users.Errors;
 using MiasoftNanus.PhoneBook.Domain.Users.Events;
 using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Services;
@@ -20,64 +21,113 @@ namespace MiasoftNanus.PhoneBook.Domain.Users.Entities;
 /// <example>
 /// This class serves as the core model for managing user-specific data and behaviors within the domain.
 /// It includes various properties such as FirstName, LastName, and Email, along with domain-specific
-/// methods for user creation and event handling.
+/// methods for user creation, update, and event handling.
 /// </example>
 public class User : Entity
 {
-    private User(
-        Guid id,
-        UserCreationData data,
-        Username userName
-    ) : base(id)
-    {
-        FirstName = data.FirstName;
-        LastName = data.LastName;
-        Password = data.Password;
-        UserName = userName;
-        Birthdate = data.Birthdate;
-        Email = data.Email;
-        Address = data.Address;
-        States = data.States;
-        DateOfLastChange = data.DateOfLastChange;
-        ProfileId = data.ProfileId;
-    }
-
-    protected User()
+    // Required by EF Core: the owned Address cannot be bound through constructor parameters.
+    private User()
     {
     }
 
-    public string? FirstName { get; init; }
-    public string? LastName { get; init; }
-    public Password? Password { get; init; }
-    public Username? UserName { get; init; }
-    public DateTime Birthdate { get; init; }
-    public Email? Email { get; init; }
-    public Address? Address { get; init; }
-    public States? States { get; init; }
-    public DateTime DateOfLastChange { get; init; }
-    public Guid ProfileId { get; init; }
+    public string? FirstName { get; private set; }
+    public string? LastName { get; private set; }
+    public Password? Password { get; private set; }
+    public Username? UserName { get; private set; }
+    public DateTime Birthdate { get; private set; }
+    public Email? Email { get; private set; }
+    public Address? Address { get; private set; }
+    public States? States { get; private set; }
+    public DateTime DateOfLastChange { get; private set; }
+    public Guid ProfileId { get; private set; }
     public Profile? Profile { get; init; }
     public ICollection<Agenda>? Agendas { get; init; }
 
     /// <summary>
     /// Creates a new <see cref="User"/> instance based on the provided user creation data.
     /// </summary>
-    /// <param name="data">The user creation data containing the first name and last name for creating the user.</param>
+    /// <param name="data">The data used to create the user. The username is generated from the first and
+    /// last name.</param>
     /// <returns>
     /// A <see cref="Result{TValue}"/> containing the newly created <see cref="User"/> instance if successful,
-    /// or an error message if the user creation fails.
+    /// or an error if the user creation fails.
     /// </returns>
     public static Result<User> Create(UserCreationData data)
     {
+        var validationResult = Validate(data);
+        if (validationResult.IsFailure)
+            return Result.Failure<User>(validationResult.Error);
+
         var usernameResult = UsernameServices.GenerateUsername(data.FirstName, data.LastName);
         if (usernameResult.IsFailure)
-        {
             return Result.Failure<User>(usernameResult.Error);
-        }
 
-        var user = new User(Guid.NewGuid(), data, usernameResult.Value);
+        var user = new User { Id = Guid.CreateVersion7(), UserName = usernameResult.Value };
+        user.Apply(data);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(user.Id));
         return Result.Success(user);
+    }
+
+    /// <summary>
+    /// Updates this user after validating the provided data. The username is not regenerated.
+    /// </summary>
+    public Result Update(UserCreationData data)
+    {
+        var validationResult = Validate(data);
+        if (validationResult.IsFailure)
+            return validationResult;
+
+        Apply(data);
+        return Result.Success();
+    }
+
+    private void Apply(UserCreationData data)
+    {
+        FirstName = data.FirstName;
+        LastName = data.LastName;
+        Password = Password.Create(data.Password).Value;
+        // A birthdate is a calendar date: keep it without timezone shifting, as UTC for timestamp.
+        Birthdate = DateTime.SpecifyKind(data.Birthdate.Date, DateTimeKind.Utc);
+        Email = Email.Create(data.Email).Value;
+        Address = data.Address;
+        States = data.States;
+        DateOfLastChange = data.DateOfLastChange;
+        ProfileId = data.ProfileId;
+    }
+
+    private static Result Validate(UserCreationData data)
+    {
+        if (string.IsNullOrWhiteSpace(data.FirstName))
+            return Result.Failure(UserErrors.FirstNameCannotBeNullOrWhitespace);
+
+        if (string.IsNullOrWhiteSpace(data.LastName))
+            return Result.Failure(UserErrors.LastNameCannotBeNullOrWhitespace);
+
+        var passwordResult = Password.Create(data.Password);
+        if (passwordResult.IsFailure)
+            return Result.Failure(passwordResult.Error);
+
+        var emailResult = Email.Create(data.Email);
+        if (emailResult.IsFailure)
+            return Result.Failure(emailResult.Error);
+
+        if (data.Birthdate == default)
+            return Result.Failure(UserErrors.BirthdateIsRequired);
+
+        if (string.IsNullOrWhiteSpace(data.Address.Country)
+            || string.IsNullOrWhiteSpace(data.Address.State)
+            || string.IsNullOrWhiteSpace(data.Address.Province)
+            || string.IsNullOrWhiteSpace(data.Address.District)
+            || string.IsNullOrWhiteSpace(data.Address.Street))
+            return Result.Failure(UserErrors.AddressIsIncomplete);
+
+        if (!Enum.IsDefined(data.States))
+            return Result.Failure(UserErrors.InvalidState);
+
+        if (data.ProfileId == Guid.Empty)
+            return Result.Failure(UserErrors.ProfileIdCannotBeEmpty);
+
+        return Result.Success();
     }
 }
