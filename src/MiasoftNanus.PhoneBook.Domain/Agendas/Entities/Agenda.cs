@@ -1,4 +1,4 @@
-﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
+﻿﻿using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Errors;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Events;
 using MiasoftNanus.PhoneBook.Domain.Locations.Entities;
@@ -19,37 +19,22 @@ public class Agenda : Entity
 {
     private Agenda()
     {
-        Code = string.Empty;
-        FullName = string.Empty;
-        Email = null;
-        Enabled = true;
-        ImagePath = string.Empty;
-        DirectLine = string.Empty;
-        Internal = string.Empty;
-        Corporate = string.Empty;
-        DirectAccess = string.Empty;
-        Workstation = null;
-        Location = null;
-        UserCreated = null;
-        WorkstationId = Guid.Empty;
-        LocationId = Guid.Empty;
-        UserIdCreated = Guid.Empty;
     }
 
-    public required string Code { get; init; }
-    public required string FullName { get; init; }
-    public Email? Email { get; init; }
-    public required bool Enabled { get; init; }
-    public string? ImagePath { get; init; }
-    public string? DirectLine { get; init; }
-    public string? Internal { get; init; }
-    public string? Corporate { get; init; }
-    public string? DirectAccess { get; init; }
-    public Guid? WorkstationId { get; init; }
+    public string Code { get; private set; } = string.Empty;
+    public string FullName { get; private set; } = string.Empty;
+    public Email? Email { get; private set; }
+    public bool Enabled { get; private set; }
+    public string? ImagePath { get; private set; }
+    public string? DirectLine { get; private set; }
+    public string? Internal { get; private set; }
+    public string? Corporate { get; private set; }
+    public string? DirectAccess { get; private set; }
+    public Guid WorkstationId { get; private set; }
     public Workstation? Workstation { get; init; }
-    public Guid? LocationId { get; init; }
+    public Guid LocationId { get; private set; }
     public Location? Location { get; init; }
-    public Guid? UserIdCreated { get; init; }
+    public Guid UserIdCreated { get; private set; }
     public User? UserCreated { get; init; }
 
     /// <summary>
@@ -61,30 +46,69 @@ public class Agenda : Entity
     /// the created <see cref="Agenda"/> or an error.</returns>
     public static Result<Agenda> Create(AgendaCreationData data)
     {
-        // Validate the input data to ensure that required fields are not null or empty.
-        if (string.IsNullOrWhiteSpace(data.Code))
-            return Result.Failure<Agenda>(AgendaErrors.CodeCannotBeNullOrWhitespace);
-        if (string.IsNullOrWhiteSpace(data.FullName))
-            return Result.Failure<Agenda>(AgendaErrors.FullNameCannotBeNullOrWhitespace);
+        var validationResult = Validate(data);
+        if (validationResult.IsFailure)
+            return Result.Failure<Agenda>(validationResult.Error);
 
-        // Create a new instance of the Agenda entity using the provided data.
-        var agenda = new Agenda
-        {
-            Code = data.Code,
-            FullName = data.FullName,
-            Email = data.Email,
-            Enabled = data.Enabled,
-            ImagePath = data.ImagePath,
-            DirectLine = data.DirectLine,
-            Internal = data.Internal,
-            Corporate = data.Corporate,
-            DirectAccess = data.DirectAccess
-        };
+        var agenda = new Agenda { Id = Guid.CreateVersion7(), UserIdCreated = data.UserIdCreated };
+        agenda.Apply(data);
 
-        // Add domain event for agenda creation.
         agenda.AddDomainEvent(new AgendaCreatedDomainEvent(agenda.Id));
-
-        // Return a successful result containing the created agenda.
         return Result.Success(agenda);
     }
+
+    /// <summary>
+    /// Updates this agenda after validating the provided data. The creator user is not changed.
+    /// </summary>
+    public Result Update(AgendaCreationData data)
+    {
+        var validationResult = Validate(data);
+        if (validationResult.IsFailure)
+            return validationResult;
+
+        Apply(data);
+        return Result.Success();
+    }
+
+    private void Apply(AgendaCreationData data)
+    {
+        Code = data.Code;
+        FullName = data.FullName;
+        Email = Email.Create(data.Email).Value;
+        Enabled = data.Enabled;
+        ImagePath = NullIfBlank(data.ImagePath);
+        DirectLine = NullIfBlank(data.DirectLine);
+        Internal = NullIfBlank(data.Internal);
+        Corporate = NullIfBlank(data.Corporate);
+        DirectAccess = NullIfBlank(data.DirectAccess);
+        WorkstationId = data.WorkstationId;
+        LocationId = data.LocationId;
+    }
+
+    private static Result Validate(AgendaCreationData data)
+    {
+        if (string.IsNullOrWhiteSpace(data.Code))
+            return Result.Failure(AgendaErrors.CodeCannotBeNullOrWhitespace);
+
+        if (string.IsNullOrWhiteSpace(data.FullName))
+            return Result.Failure(AgendaErrors.FullNameCannotBeNullOrWhitespace);
+
+        var emailResult = Email.Create(data.Email);
+        if (emailResult.IsFailure)
+            return Result.Failure(emailResult.Error);
+
+        if (data.WorkstationId == Guid.Empty)
+            return Result.Failure(AgendaErrors.WorkstationIdCannotBeEmpty);
+
+        if (data.LocationId == Guid.Empty)
+            return Result.Failure(AgendaErrors.LocationIdCannotBeEmpty);
+
+        if (data.UserIdCreated == Guid.Empty)
+            return Result.Failure(AgendaErrors.UserIdCreatedCannotBeEmpty);
+
+        return Result.Success();
+    }
+
+    private static string? NullIfBlank(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }
