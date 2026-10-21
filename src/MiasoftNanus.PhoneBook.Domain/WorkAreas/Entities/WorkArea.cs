@@ -11,23 +11,23 @@ namespace MiasoftNanus.PhoneBook.Domain.WorkAreas.Entities;
 /// The <c>WorkArea</c> class encapsulates details related to a specific area of work or domain context.
 /// It includes unique identification, a code, a name, and an optional description. This entity
 /// inherits from the <c>Entity</c> base class, which provides unique identification and domain event management.
-/// 
+///
 /// This class also provides a factory method <see cref="Create"/> to ensure proper initialization
 /// and validation during the creation of a work area instance.
 /// </remarks>
 public class WorkArea : Entity
 {
-    private WorkArea()
+    private WorkArea(Guid id, string code, string name, string? description)
     {
-        Code = string.Empty;
-        Name = string.Empty;
-        Description = null;
-        Workstations = null;
+        Id = id;
+        Code = code;
+        Name = name;
+        Description = description;
     }
 
-    public required string Code { get; init; }
-    public required string Name { get; init; }
-    public string? Description { get; init; }
+    public string Code { get; private set; }
+    public string Name { get; private set; }
+    public string? Description { get; private set; }
     public ICollection<Workstation>? Workstations { get; init; }
 
     /// <summary>
@@ -44,27 +44,35 @@ public class WorkArea : Entity
     /// </returns>
     public static Result<WorkArea> Create(string code, string name, string? description)
     {
-        // Validate required fields.
+        var validationResult = Validate(code, name);
+        return validationResult.IsFailure
+            ? Result.Failure<WorkArea>(validationResult.Error)
+            : Result.Success(new WorkArea(Guid.CreateVersion7(), code, name, description));
+    }
+
+    /// <summary>
+    /// Updates this work area after validating its required fields.
+    /// </summary>
+    public Result Update(string code, string name, string? description)
+    {
+        var validationResult = Validate(code, name);
+        if (validationResult.IsFailure)
+            return validationResult;
+
+        Code = code;
+        Name = name;
+        Description = description;
+        return Result.Success();
+    }
+
+    private static Result Validate(string code, string name)
+    {
         if (string.IsNullOrWhiteSpace(code))
-        {
-            return Result.Failure<WorkArea>(WorkAreaErrors.CodeCannotBeNullOrWhitespace);
-        }
+            return Result.Failure(WorkAreaErrors.CodeCannotBeNullOrWhitespace);
 
         if (string.IsNullOrWhiteSpace(name))
-        {
-            return Result.Failure<WorkArea>(WorkAreaErrors.NameCannotBeNullOrWhitespace);
-        }
-        
-        // Create a new WorkArea instance with the provided attributes.
-        var workArea = new WorkArea()
-        {
-            Id = Guid.NewGuid(),
-            Code = code,
-            Name = name,
-            Description = description
-        };
+            return Result.Failure(WorkAreaErrors.NameCannotBeNullOrWhitespace);
 
-        // Return a successful result containing the newly created WorkArea instance.
-        return Result.Success(workArea);
+        return Result.Success();
     }
 }
