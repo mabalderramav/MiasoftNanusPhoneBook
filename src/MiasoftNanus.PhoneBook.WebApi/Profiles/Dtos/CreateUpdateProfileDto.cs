@@ -3,7 +3,7 @@
 /// <summary>
 /// Data Transfer Object used for creating or updating a profile.
 /// </summary>
-public record CrearUpdateProfileDto(
+public record CreateUpdateProfileDto(
     string ProfileName,
     string? Description
 );
