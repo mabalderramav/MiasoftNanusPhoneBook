@@ -34,8 +34,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password)
             .HasConversion
             (
-                password => password!.Value,
-                value => Password.Create(value).Value
+                password => ToStoredPassword(password),
+                value => Password.FromHash(value)
             ).IsRequired();
 
         builder.Property(u => u.UserName)
@@ -75,5 +75,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property<uint>("version")
             .IsRowVersion()
             .IsConcurrencyToken();
+    }
+
+    // Safety net: only hashed passwords can reach the database. Kept out of the converter lambda because
+    // expression trees cannot contain throw expressions.
+    private static string ToStoredPassword(Password? password)
+    {
+        if (password is null || !password.IsHashed)
+            throw new InvalidOperationException("A plain-text password cannot be persisted.");
+
+        return password.Value;
     }
 }

@@ -82,6 +82,15 @@ public class User : Entity
         return Result.Success();
     }
 
+    /// <summary>
+    /// Replaces the plain password with its hash. Must be called before the user is persisted.
+    /// </summary>
+    /// <param name="passwordHasher">The hasher used to hash the plain password.</param>
+    public void HashPassword(IPasswordHasher passwordHasher)
+    {
+        Password = Password!.Hash(passwordHasher);
+    }
+
     private void Apply(UserCreationData data)
     {
         FirstName = data.FirstName;

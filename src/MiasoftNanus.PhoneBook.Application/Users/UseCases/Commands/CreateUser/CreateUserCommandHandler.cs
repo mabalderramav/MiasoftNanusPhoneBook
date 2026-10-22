@@ -6,6 +6,7 @@ using MiasoftNanus.PhoneBook.Domain.Profiles.Errors;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
+using MiasoftNanus.PhoneBook.Domain.Users.Services;
 
 namespace MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.CreateUser;
 
@@ -16,7 +17,8 @@ public sealed class CreateUserCommandHandler(
     IUserRepository userRepository,
     IProfileRepository profileRepository,
     IUnitOfWork unitOfWork,
-    IDateTimeProvider dateTimeProvider
+    IDateTimeProvider dateTimeProvider,
+    IPasswordHasher passwordHasher
 ) : ICommandHandler<CreateUserCommand, Result<User>>
 {
     public async Task<Result<User>> HandleAsync(
@@ -30,6 +32,9 @@ public sealed class CreateUserCommandHandler(
         var profile = await profileRepository.GetByIdAsync(command.ProfileId, cancellationToken);
         if (profile is null)
             return Result.Failure<User>(ProfileErrors.ProfileNotFound);
+
+        // Hash after the cheap checks: PBKDF2 is intentionally slow.
+        userResult.Value.HashPassword(passwordHasher);
 
         userRepository.Add(userResult.Value);
         var result = await unitOfWork.SaveChangesAsync(cancellationToken);
