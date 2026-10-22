@@ -14,4 +14,10 @@ public record CreateUpdateUserDto(
     AddressDto? Address,
     States States,
     Guid ProfileId
-);
+)
+{
+    // Masks the raw password so it never leaks through logs.
+    public override string ToString() =>
+        $"{nameof(CreateUpdateUserDto)} {{ FirstName = {FirstName}, LastName = {LastName}, Password = ***, " +
+        $"Email = {Email}, States = {States}, ProfileId = {ProfileId} }}";
+}

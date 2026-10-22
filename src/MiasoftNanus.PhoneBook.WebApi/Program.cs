@@ -29,6 +29,8 @@ try
         await app.MigrateDatabaseAsync();
     }
 
+    // Do not enable request/response body logging (e.g., UseHttpLogging with RequestBody) without excluding
+    // /users: it would log plain-text passwords.
     app.UseHttpsRedirection();
     app.MapEndpoints();
 
