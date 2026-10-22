@@ -21,4 +21,10 @@ public record CreateUserCommand(
     string Street,
     States States,
     Guid ProfileId
-) : ICommand<Result<User>>;
+) : ICommand<Result<User>>
+{
+    // Masks the raw password so it never leaks through logs.
+    public override string ToString() =>
+        $"{nameof(CreateUserCommand)} {{ FirstName = {FirstName}, LastName = {LastName}, Password = ***, " +
+        $"Email = {Email}, States = {States}, ProfileId = {ProfileId} }}";
+}

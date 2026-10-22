@@ -5,9 +5,11 @@ using MiasoftNanus.PhoneBook.Domain.Agendas.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Locations.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Profiles.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Users.Repositories;
+using MiasoftNanus.PhoneBook.Domain.Users.Services;
 using MiasoftNanus.PhoneBook.Domain.WorkAreas.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Workstations.Repositories;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Email;
+using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Security;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Infrastructure.Agendas;
 using MiasoftNanus.PhoneBook.Infrastructure.Locations;
@@ -67,6 +69,7 @@ public static class DependencyInjection
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
         return services;
     }
