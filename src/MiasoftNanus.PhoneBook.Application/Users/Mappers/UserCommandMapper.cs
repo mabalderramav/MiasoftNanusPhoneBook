@@ -6,7 +6,7 @@ using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 namespace MiasoftNanus.PhoneBook.Application.Users.Mappers;
 
 /// <summary>
-/// Provides mapping from user commands to <see cref="UserCreationData"/>.
+/// Provides mapping from user commands to <see cref="UserCreationData"/> and <see cref="UserData"/>.
 /// </summary>
 public static class UserCommandMapper
 {
@@ -26,13 +26,12 @@ public static class UserCommandMapper
         };
     }
 
-    public static UserCreationData ToUserCreationData(this UpdateUserCommand command, DateTime now)
+    public static UserData ToUserData(this UpdateUserCommand command, DateTime now)
     {
-        return new UserCreationData
+        return new UserData
         {
             FirstName = command.FirstName,
             LastName = command.LastName,
-            Password = command.Password,
             Birthdate = command.Birthdate,
             Email = command.Email,
             Address = new Address(command.Country, command.State, command.Province, command.District, command.Street),

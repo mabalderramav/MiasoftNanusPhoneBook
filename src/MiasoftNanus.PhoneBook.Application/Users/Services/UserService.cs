@@ -1,5 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Services;
+using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.ChangeUserPassword;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.CreateUser;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.DeleteUser;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.UpdateUser;
@@ -50,7 +51,6 @@ public class UserService(IDispatcher dispatcher)
             id,
             entity.FirstName!,
             entity.LastName!,
-            entity.Password!.Value,
             entity.Birthdate,
             entity.Email!.Value,
             entity.Address!.Country,
@@ -65,5 +65,32 @@ public class UserService(IDispatcher dispatcher)
     protected override ICommand<Result> BuildDeleteCommand(Guid id)
     {
         return new DeleteUserCommand(id);
+    }
+
+    public Task<Result<User>> UpdateDetailsAsync(
+        Guid id,
+        UserData data,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new UpdateUserCommand(
+            id,
+            data.FirstName,
+            data.LastName,
+            data.Birthdate,
+            data.Email,
+            data.Address.Country,
+            data.Address.State,
+            data.Address.Province,
+            data.Address.District,
+            data.Address.Street,
+            data.States,
+            data.ProfileId);
+
+        return Dispatcher.SendCommandAsync(command, cancellationToken);
+    }
+
+    public Task<Result> ChangePasswordAsync(Guid id, string password, CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendCommandAsync(new ChangeUserPasswordCommand(id, password), cancellationToken);
     }
 }

@@ -15,7 +15,7 @@ namespace MiasoftNanus.PhoneBook.Application.Abstractions.Services;
 public abstract class CrudCqrsService<T, TId>(IDispatcher dispatcher) : ICrudService<T, TId>
     where T : Entity
 {
-    private IDispatcher Dispatcher { get; } = dispatcher;
+    protected IDispatcher Dispatcher { get; } = dispatcher;
 
     /// <summary>
     /// Builds the command that creates a new entity of type <paramref name="entity"/>.

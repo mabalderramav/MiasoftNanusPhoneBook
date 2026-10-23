@@ -38,28 +38,52 @@ public static class UserMap
         return users.Select(user => user.ToDto());
     }
 
-    public static Result<User> ToEntity(this CreateUpdateUserDto createUpdateUserDto, DateTime now)
+    public static Result<User> ToEntity(this CreateUserDto createUserDto, DateTime now)
     {
-        if (createUpdateUserDto.Address is null)
+        if (createUserDto.Address is null)
             return Result.Failure<User>(UserErrors.AddressIsIncomplete);
 
         return User.Create(new UserCreationData
         {
-            FirstName = createUpdateUserDto.FirstName,
-            LastName = createUpdateUserDto.LastName,
-            Password = createUpdateUserDto.Password,
-            Birthdate = createUpdateUserDto.Birthdate,
-            Email = createUpdateUserDto.Email,
+            FirstName = createUserDto.FirstName,
+            LastName = createUserDto.LastName,
+            Password = createUserDto.Password,
+            Birthdate = createUserDto.Birthdate,
+            Email = createUserDto.Email,
             Address = new Address(
-                createUpdateUserDto.Address.Country,
-                createUpdateUserDto.Address.State,
-                createUpdateUserDto.Address.Province,
-                createUpdateUserDto.Address.District,
-                createUpdateUserDto.Address.Street
+                createUserDto.Address.Country,
+                createUserDto.Address.State,
+                createUserDto.Address.Province,
+                createUserDto.Address.District,
+                createUserDto.Address.Street
             ),
-            States = createUpdateUserDto.States,
+            States = createUserDto.States,
             DateOfLastChange = now,
-            ProfileId = createUpdateUserDto.ProfileId
+            ProfileId = createUserDto.ProfileId
+        });
+    }
+
+    public static Result<UserData> ToUserData(this UpdateUserDto updateUserDto, DateTime now)
+    {
+        if (updateUserDto.Address is null)
+            return Result.Failure<UserData>(UserErrors.AddressIsIncomplete);
+
+        return Result.Success(new UserData
+        {
+            FirstName = updateUserDto.FirstName,
+            LastName = updateUserDto.LastName,
+            Birthdate = updateUserDto.Birthdate,
+            Email = updateUserDto.Email,
+            Address = new Address(
+                updateUserDto.Address.Country,
+                updateUserDto.Address.State,
+                updateUserDto.Address.Province,
+                updateUserDto.Address.District,
+                updateUserDto.Address.Street
+            ),
+            States = updateUserDto.States,
+            DateOfLastChange = now,
+            ProfileId = updateUserDto.ProfileId
         });
     }
 }

@@ -1,4 +1,7 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Users.Errors;
+using MiasoftNanus.PhoneBook.Domain.Users.ObjectValues;
 using MiasoftNanus.PhoneBook.Domain.Users.Services;
 using MiasoftNanus.PhoneBook.WebApi.Users.Dtos;
 using MiasoftNanus.PhoneBook.WebApi.Users.Mappers;
@@ -17,6 +20,7 @@ public static class UserEndpoints
         userGroup.MapGet("/{id:guid}", GetUserById);
         userGroup.MapPost("/", CreateUser);
         userGroup.MapPut("/{id:guid}", UpdateUser);
+        userGroup.MapPut("/{id:guid}/password", ChangeUserPassword);
         userGroup.MapDelete("/{id:guid}", DeleteUser);
     }
 
@@ -44,12 +48,12 @@ public static class UserEndpoints
     }
 
     private static async Task<IResult> CreateUser(
-        CreateUpdateUserDto createUpdateUserDto,
+        CreateUserDto createUserDto,
         IUserService userService,
         IDateTimeProvider dateTimeProvider,
         CancellationToken cancellationToken)
     {
-        var userResult = createUpdateUserDto.ToEntity(dateTimeProvider.CurrentTime);
+        var userResult = createUserDto.ToEntity(dateTimeProvider.CurrentTime);
         if (userResult.IsFailure)
             return TypedResults.BadRequest(userResult.Error);
 
@@ -61,19 +65,46 @@ public static class UserEndpoints
 
     private static async Task<IResult> UpdateUser(
         Guid id,
-        CreateUpdateUserDto createUpdateUserDto,
+        UpdateUserDto updateUserDto,
         IUserService userService,
         IDateTimeProvider dateTimeProvider,
         CancellationToken cancellationToken)
     {
-        var userResult = createUpdateUserDto.ToEntity(dateTimeProvider.CurrentTime);
-        if (userResult.IsFailure)
-            return TypedResults.BadRequest(userResult.Error);
+        var userDataResult = updateUserDto.ToUserData(dateTimeProvider.CurrentTime);
+        if (userDataResult.IsFailure)
+            return TypedResults.BadRequest(userDataResult.Error);
 
-        var result = await userService.UpdateAsync(id, userResult.Value, cancellationToken);
-        return result.IsFailure
-            ? TypedResults.NotFound(result.Error)
-            : TypedResults.Ok(result.Value.ToDto());
+        var result = await userService.UpdateDetailsAsync(id, userDataResult.Value, cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    private static async Task<IResult> ChangeUserPassword(
+        Guid id,
+        ChangeUserPasswordDto changeUserPasswordDto,
+        IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        // Early 400 on the raw value, before any lookup or hashing.
+        var passwordResult = Password.Create(changeUserPasswordDto.Password);
+        if (passwordResult.IsFailure)
+            return TypedResults.BadRequest(passwordResult.Error);
+
+        var result = await userService.ChangePasswordAsync(id, changeUserPasswordDto.Password, cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.NoContent();
+    }
+
+    // A missing user is a 404; any other failure (validation, unknown profile, ...) is a 400.
+    private static IResult ToErrorResult(Error error)
+    {
+        return error == UserErrors.UserNotFound
+            ? TypedResults.NotFound(error)
+            : TypedResults.BadRequest(error);
     }
 
     private static async Task<IResult> DeleteUser(
