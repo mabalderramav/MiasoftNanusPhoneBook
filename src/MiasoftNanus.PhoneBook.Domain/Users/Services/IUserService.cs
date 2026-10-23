@@ -19,6 +19,15 @@ public interface IUserService : ICrudService<User, Guid>
     Task<Result<User>> UpdateDetailsAsync(Guid id, UserData data, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Asynchronously applies a partial update to the details of an existing user. The password is not changed.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user to be updated.</param>
+    /// <param name="data">The details to change; unset members keep their current value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A result containing the updated user, or an error if the operation failed.</returns>
+    Task<Result<User>> PatchAsync(Guid id, UserPatchData data, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Asynchronously replaces the password of an existing user.
     /// </summary>
     /// <param name="id">The unique identifier of the user.</param>

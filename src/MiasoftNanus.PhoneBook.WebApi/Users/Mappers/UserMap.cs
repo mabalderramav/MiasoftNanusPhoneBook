@@ -86,4 +86,22 @@ public static class UserMap
             ProfileId = updateUserDto.ProfileId
         });
     }
+
+    public static UserPatchData ToUserPatchData(this PatchUserDto patchUserDto)
+    {
+        return new UserPatchData
+        {
+            FirstName = patchUserDto.FirstName,
+            LastName = patchUserDto.LastName,
+            Birthdate = patchUserDto.Birthdate,
+            Email = patchUserDto.Email,
+            Country = patchUserDto.Address?.Country,
+            State = patchUserDto.Address?.State,
+            Province = patchUserDto.Address?.Province,
+            District = patchUserDto.Address?.District,
+            Street = patchUserDto.Address?.Street,
+            States = patchUserDto.States,
+            ProfileId = patchUserDto.ProfileId
+        };
+    }
 }

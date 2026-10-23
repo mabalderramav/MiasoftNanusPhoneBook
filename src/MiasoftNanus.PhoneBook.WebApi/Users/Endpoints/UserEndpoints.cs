@@ -17,11 +17,13 @@ public static class UserEndpoints
     {
         var userGroup = app.MapGroup("/users");
         userGroup.MapGet("/", GetUserAll);
-        userGroup.MapGet("/{id:guid}", GetUserById);
+        userGroup.MapGet($"/{{id:guid}}", GetUserById);
         userGroup.MapPost("/", CreateUser);
-        userGroup.MapPut("/{id:guid}", UpdateUser);
-        userGroup.MapPut("/{id:guid}/password", ChangeUserPassword);
-        userGroup.MapDelete("/{id:guid}", DeleteUser);
+        userGroup.MapPut($"/{{id:guid}}", UpdateUser);
+        userGroup.MapPatch($"/{{id:guid}}", PatchUser)
+            .Accepts<PatchUserDto>("application/merge-patch+json", "application/json");
+        userGroup.MapPut($"/{{id:guid}}/password", ChangeUserPassword);
+        userGroup.MapDelete($"/{{id:guid}}", DeleteUser);
     }
 
     private static async Task<IResult> GetUserAll(
@@ -75,6 +77,19 @@ public static class UserEndpoints
             return TypedResults.BadRequest(userDataResult.Error);
 
         var result = await userService.UpdateDetailsAsync(id, userDataResult.Value, cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    private static async Task<IResult> PatchUser(
+        Guid id,
+        PatchUserDto patchUserDto,
+        IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var result = await userService.PatchAsync(id, patchUserDto.ToUserPatchData(), cancellationToken);
         if (result.IsFailure)
             return ToErrorResult(result.Error);
 

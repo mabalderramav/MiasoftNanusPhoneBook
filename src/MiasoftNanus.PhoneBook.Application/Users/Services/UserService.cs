@@ -3,6 +3,7 @@ using MiasoftNanus.PhoneBook.Application.Abstractions.Services;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.ChangeUserPassword;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.CreateUser;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.DeleteUser;
+using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.PatchUser;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.UpdateUser;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Queries.GetUserAll;
 using MiasoftNanus.PhoneBook.Application.Users.UseCases.Queries.GetUserById;
@@ -87,6 +88,11 @@ public class UserService(IDispatcher dispatcher)
             data.ProfileId);
 
         return Dispatcher.SendCommandAsync(command, cancellationToken);
+    }
+
+    public Task<Result<User>> PatchAsync(Guid id, UserPatchData data, CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendCommandAsync(new PatchUserCommand(id, data), cancellationToken);
     }
 
     public Task<Result> ChangePasswordAsync(Guid id, string password, CancellationToken cancellationToken = default)
