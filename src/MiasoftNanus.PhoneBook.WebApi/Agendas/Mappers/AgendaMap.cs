@@ -1,6 +1,9 @@
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.WebApi.Agendas.Dtos;
+using MiasoftNanus.PhoneBook.WebApi.Locations.Mappers;
+using MiasoftNanus.PhoneBook.WebApi.Users.Mappers;
+using MiasoftNanus.PhoneBook.WebApi.Workstations.Mappers;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Agendas.Mappers;
 
@@ -24,7 +27,10 @@ public static class AgendaMap
             agenda.DirectAccess,
             agenda.WorkstationId,
             agenda.LocationId,
-            agenda.UserIdCreated
+            agenda.UserIdCreated,
+            agenda.Workstation?.ToDto(),
+            agenda.Location?.ToDto(),
+            agenda.UserCreated?.ToSummaryDto()
         );
     }
 
@@ -50,5 +56,23 @@ public static class AgendaMap
             LocationId = createUpdateAgendaDto.LocationId,
             UserIdCreated = createUpdateAgendaDto.UserIdCreated
         });
+    }
+
+    public static AgendaPatchData ToAgendaPatchData(this PatchAgendaDto patchAgendaDto)
+    {
+        return new AgendaPatchData
+        {
+            Code = patchAgendaDto.Code,
+            FullName = patchAgendaDto.FullName,
+            Email = patchAgendaDto.Email,
+            Enabled = patchAgendaDto.Enabled,
+            ImagePath = patchAgendaDto.ImagePath,
+            DirectLine = patchAgendaDto.DirectLine,
+            Internal = patchAgendaDto.Internal,
+            Corporate = patchAgendaDto.Corporate,
+            DirectAccess = patchAgendaDto.DirectAccess,
+            WorkstationId = patchAgendaDto.WorkstationId,
+            LocationId = patchAgendaDto.LocationId
+        };
     }
 }

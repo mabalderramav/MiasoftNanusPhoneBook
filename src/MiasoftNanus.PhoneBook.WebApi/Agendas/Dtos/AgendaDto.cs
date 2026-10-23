@@ -1,7 +1,12 @@
+using MiasoftNanus.PhoneBook.WebApi.Locations.Dtos;
+using MiasoftNanus.PhoneBook.WebApi.Users.Dtos;
+using MiasoftNanus.PhoneBook.WebApi.Workstations.Dtos;
+
 namespace MiasoftNanus.PhoneBook.WebApi.Agendas.Dtos;
 
 /// <summary>
-/// Data transfer object representing an agenda.
+/// Data transfer object representing an agenda. The workstation, location and creator user are embedded next to
+/// their identifiers.
 /// </summary>
 public record AgendaDto(
     Guid Id,
@@ -16,5 +21,8 @@ public record AgendaDto(
     string? DirectAccess,
     Guid WorkstationId,
     Guid LocationId,
-    Guid UserIdCreated
+    Guid UserIdCreated,
+    WorkstationDto? Workstation,
+    LocationDto? Location,
+    UserSummaryDto? UserCreated
 );

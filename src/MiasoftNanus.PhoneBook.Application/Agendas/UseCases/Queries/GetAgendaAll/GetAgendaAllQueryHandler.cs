@@ -16,7 +16,7 @@ public class GetAgendaAllQueryHandler(IAgendaRepository agendaRepository) :
         GetAgendaAllQuery query,
         CancellationToken cancellationToken = default)
     {
-        var agendas = await agendaRepository.GetAllAsync(cancellationToken);
+        var agendas = await agendaRepository.GetAllWithDetailsAsync(cancellationToken);
         return agendas.Count > 0
             ? Result.Success(agendas)
             : Result.Failure<ICollection<Agenda>>(AgendaErrors.AgendasNotFound);

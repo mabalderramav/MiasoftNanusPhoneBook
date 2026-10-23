@@ -2,6 +2,7 @@ using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Services;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.CreateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.DeleteAgenda;
+using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.PatchAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UpdateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaAll;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaById;
@@ -65,5 +66,10 @@ public class AgendaService(IDispatcher dispatcher)
     protected override ICommand<Result> BuildDeleteCommand(Guid id)
     {
         return new DeleteAgendaCommand(id);
+    }
+
+    public Task<Result<Agenda>> PatchAsync(Guid id, AgendaPatchData data, CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendCommandAsync(new PatchAgendaCommand(id, data), cancellationToken);
     }
 }

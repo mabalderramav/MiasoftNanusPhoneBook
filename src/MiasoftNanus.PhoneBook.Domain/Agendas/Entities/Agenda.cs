@@ -70,6 +70,30 @@ public class Agenda : Entity
         return Result.Success();
     }
 
+    /// <summary>
+    /// Applies a partial update: every member of <paramref name="data"/> that is set replaces the current value, the
+    /// others are kept. The merged data is validated like <see cref="Update"/>. The creator user is not changed.
+    /// </summary>
+    /// <param name="data">The values to change.</param>
+    public Result Patch(AgendaPatchData data)
+    {
+        return Update(new AgendaCreationData
+        {
+            Code = data.Code ?? Code,
+            FullName = data.FullName ?? FullName,
+            Email = data.Email ?? Email!.Value,
+            Enabled = data.Enabled ?? Enabled,
+            ImagePath = data.ImagePath ?? ImagePath,
+            DirectLine = data.DirectLine ?? DirectLine,
+            Internal = data.Internal ?? Internal,
+            Corporate = data.Corporate ?? Corporate,
+            DirectAccess = data.DirectAccess ?? DirectAccess,
+            WorkstationId = data.WorkstationId ?? WorkstationId,
+            LocationId = data.LocationId ?? LocationId,
+            UserIdCreated = UserIdCreated
+        });
+    }
+
     private void Apply(AgendaCreationData data)
     {
         Code = data.Code;
