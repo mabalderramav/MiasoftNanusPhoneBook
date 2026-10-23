@@ -6,13 +6,13 @@ using MiasoftNanus.PhoneBook.Domain.Users.Entities;
 namespace MiasoftNanus.PhoneBook.Application.Users.UseCases.Commands.UpdateUser;
 
 /// <summary>
-/// Represents a command to update a user.
+/// Represents a command to update the details of a user. The password is changed by
+/// <see cref="ChangeUserPassword.ChangeUserPasswordCommand"/>.
 /// </summary>
 public record UpdateUserCommand(
     Guid Id,
     string FirstName,
     string LastName,
-    string Password,
     DateTime Birthdate,
     string Email,
     string Country,
@@ -22,10 +22,4 @@ public record UpdateUserCommand(
     string Street,
     States States,
     Guid ProfileId
-) : ICommand<Result<User>>
-{
-    // Masks the raw password so it never leaks through logs.
-    public override string ToString() =>
-        $"{nameof(UpdateUserCommand)} {{ Id = {Id}, FirstName = {FirstName}, LastName = {LastName}, Password = ***, " + 
-        $"Email = {Email}, States = {States}, ProfileId = {ProfileId} }}";
-}
+) : ICommand<Result<User>>;

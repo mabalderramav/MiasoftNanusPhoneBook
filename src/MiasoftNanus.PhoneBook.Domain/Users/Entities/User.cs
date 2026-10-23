@@ -58,11 +58,20 @@ public class User : Entity
         if (validationResult.IsFailure)
             return Result.Failure<User>(validationResult.Error);
 
+        var passwordResult = Password.Create(data.Password);
+        if (passwordResult.IsFailure)
+            return Result.Failure<User>(passwordResult.Error);
+
         var usernameResult = UsernameServices.GenerateUsername(data.FirstName, data.LastName);
         if (usernameResult.IsFailure)
             return Result.Failure<User>(usernameResult.Error);
 
-        var user = new User { Id = Guid.CreateVersion7(), UserName = usernameResult.Value };
+        var user = new User
+        {
+            Id = Guid.CreateVersion7(),
+            UserName = usernameResult.Value,
+            Password = passwordResult.Value
+        };
         user.Apply(data);
 
         user.AddDomainEvent(new UserCreatedDomainEvent(user.Id));
@@ -70,15 +79,33 @@ public class User : Entity
     }
 
     /// <summary>
-    /// Updates this user after validating the provided data. The username is not regenerated.
+    /// Updates the details of this user after validating the provided data. The username and the password are
+    /// not changed; use <see cref="ChangePassword"/> for the password.
     /// </summary>
-    public Result Update(UserCreationData data)
+    public Result Update(UserData data)
     {
         var validationResult = Validate(data);
         if (validationResult.IsFailure)
             return validationResult;
 
         Apply(data);
+        return Result.Success();
+    }
+
+    /// <summary>
+    /// Validates the raw password, replaces the current one with its hash and records the change date.
+    /// </summary>
+    /// <param name="password">The new raw password.</param>
+    /// <param name="passwordHasher">The hasher used to hash the new password.</param>
+    /// <param name="dateOfLastChange">The date of the change.</param>
+    public Result ChangePassword(string password, IPasswordHasher passwordHasher, DateTime dateOfLastChange)
+    {
+        var passwordResult = Password.Create(password);
+        if (passwordResult.IsFailure)
+            return Result.Failure(passwordResult.Error);
+
+        Password = passwordResult.Value.Hash(passwordHasher);
+        DateOfLastChange = dateOfLastChange;
         return Result.Success();
     }
 
@@ -91,11 +118,10 @@ public class User : Entity
         Password = Password!.Hash(passwordHasher);
     }
 
-    private void Apply(UserCreationData data)
+    private void Apply(UserData data)
     {
         FirstName = data.FirstName;
         LastName = data.LastName;
-        Password = Password.Create(data.Password).Value;
         // A birthdate is a calendar date: keep it without timezone shifting, as UTC for timestamp.
         Birthdate = DateTime.SpecifyKind(data.Birthdate.Date, DateTimeKind.Utc);
         Email = Email.Create(data.Email).Value;
@@ -105,17 +131,13 @@ public class User : Entity
         ProfileId = data.ProfileId;
     }
 
-    private static Result Validate(UserCreationData data)
+    private static Result Validate(UserData data)
     {
         if (string.IsNullOrWhiteSpace(data.FirstName))
             return Result.Failure(UserErrors.FirstNameCannotBeNullOrWhitespace);
 
         if (string.IsNullOrWhiteSpace(data.LastName))
             return Result.Failure(UserErrors.LastNameCannotBeNullOrWhitespace);
-
-        var passwordResult = Password.Create(data.Password);
-        if (passwordResult.IsFailure)
-            return Result.Failure(passwordResult.Error);
 
         var emailResult = Email.Create(data.Email);
         if (emailResult.IsFailure)

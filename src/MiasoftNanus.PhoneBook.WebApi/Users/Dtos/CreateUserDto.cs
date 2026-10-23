@@ -3,9 +3,9 @@ using MiasoftNanus.PhoneBook.Domain.Shared.Enums;
 namespace MiasoftNanus.PhoneBook.WebApi.Users.Dtos;
 
 /// <summary>
-/// Data transfer object used for creating or updating a user.
+/// Data transfer object used for creating a user.
 /// </summary>
-public record CreateUpdateUserDto(
+public record CreateUserDto(
     string FirstName,
     string LastName,
     string Password,
@@ -18,6 +18,6 @@ public record CreateUpdateUserDto(
 {
     // Masks the raw password so it never leaks through logs.
     public override string ToString() =>
-        $"{nameof(CreateUpdateUserDto)} {{ FirstName = {FirstName}, LastName = {LastName}, Password = ***, " +
+        $"{nameof(CreateUserDto)} {{ FirstName = {FirstName}, LastName = {LastName}, Password = ***, " +
         $"Email = {Email}, States = {States}, ProfileId = {ProfileId} }}";
 }
