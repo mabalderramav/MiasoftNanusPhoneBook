@@ -14,6 +14,7 @@ public static class AgendaMap
 {
     public static AgendaDto ToDto(this Agenda agenda)
     {
+        // The workstation, location and creator user are always loaded by the repository / command handlers.
         return new AgendaDto(
             agenda.Id,
             agenda.Code,
@@ -25,12 +26,9 @@ public static class AgendaMap
             agenda.Internal,
             agenda.Corporate,
             agenda.DirectAccess,
-            agenda.WorkstationId,
-            agenda.LocationId,
-            agenda.UserIdCreated,
-            agenda.Workstation?.ToDto(),
-            agenda.Location?.ToDto(),
-            agenda.UserCreated?.ToSummaryDto()
+            agenda.Workstation!.ToDto(),
+            agenda.Location!.ToDto(),
+            agenda.UserCreated!.ToSummaryDto()
         );
     }
 
