@@ -93,6 +93,34 @@ public class User : Entity
     }
 
     /// <summary>
+    /// Applies a partial update: every member of <paramref name="data"/> that is set replaces the current value, the
+    /// others are kept. The merged details are validated like <see cref="Update"/>. The username and the password are
+    /// not changed.
+    /// </summary>
+    /// <param name="data">The details to change.</param>
+    /// <param name="dateOfLastChange">The date of the change.</param>
+    public Result Patch(UserPatchData data, DateTime dateOfLastChange)
+    {
+        var address = Address!;
+        return Update(new UserData
+        {
+            FirstName = data.FirstName ?? FirstName!,
+            LastName = data.LastName ?? LastName!,
+            Birthdate = data.Birthdate ?? Birthdate,
+            Email = data.Email ?? Email!.Value,
+            Address = new Address(
+                data.Country ?? address.Country,
+                data.State ?? address.State,
+                data.Province ?? address.Province,
+                data.District ?? address.District,
+                data.Street ?? address.Street),
+            States = data.States ?? States!.Value,
+            DateOfLastChange = dateOfLastChange,
+            ProfileId = data.ProfileId ?? ProfileId
+        });
+    }
+
+    /// <summary>
     /// Validates the raw password, replaces the current one with its hash and records the change date.
     /// </summary>
     /// <param name="password">The new raw password.</param>
