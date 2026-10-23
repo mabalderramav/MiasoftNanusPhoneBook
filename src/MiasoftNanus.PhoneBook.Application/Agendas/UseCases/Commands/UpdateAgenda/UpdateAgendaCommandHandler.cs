@@ -43,9 +43,10 @@ public sealed class UpdateAgendaCommandHandler(
 
         agendaRepository.Update(agenda);
         var result = await unitOfWork.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Result.Failure<Agenda>(Error.CannotSaveChanges);
 
-        return result > 0
-            ? Result.Success(agenda)
-            : Result.Failure<Agenda>(Error.CannotSaveChanges);
+        await agendaRepository.LoadDetailsAsync(agenda, cancellationToken);
+        return Result.Success(agenda);
     }
 }

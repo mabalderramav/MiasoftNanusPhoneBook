@@ -38,6 +38,16 @@ public static class UserMap
         return users.Select(user => user.ToDto());
     }
 
+    public static UserSummaryDto ToSummaryDto(this User user)
+    {
+        return new UserSummaryDto(
+            user.Id,
+            user.UserName!.Value,
+            user.FirstName!,
+            user.LastName!
+        );
+    }
+
     public static Result<User> ToEntity(this CreateUserDto createUserDto, DateTime now)
     {
         if (createUserDto.Address is null)

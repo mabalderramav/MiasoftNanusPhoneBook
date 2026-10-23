@@ -16,7 +16,7 @@ public class GetAgendaByIdQueryHandler(IAgendaRepository agendaRepository) :
         GetAgendaByIdQuery query,
         CancellationToken cancellationToken = default)
     {
-        var agenda = await agendaRepository.GetByIdAsync(query.Id, cancellationToken);
+        var agenda = await agendaRepository.GetByIdWithDetailsAsync(query.Id, cancellationToken);
         return agenda is not null
             ? Result.Success(agenda)
             : Result.Failure<Agenda>(AgendaErrors.AgendaNotFound);

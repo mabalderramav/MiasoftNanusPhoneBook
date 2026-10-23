@@ -1,3 +1,5 @@
+using MiasoftNanus.PhoneBook.Domain.Abstractions;
+using MiasoftNanus.PhoneBook.Domain.Agendas.Errors;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Services;
 using MiasoftNanus.PhoneBook.WebApi.Agendas.Dtos;
 using MiasoftNanus.PhoneBook.WebApi.Agendas.Mappers;
@@ -16,6 +18,8 @@ public static class AgendaEndpoints
         agendaGroup.MapGet("/{id:guid}", GetAgendaById);
         agendaGroup.MapPost("/", CreateAgenda);
         agendaGroup.MapPut("/{id:guid}", UpdateAgenda);
+        agendaGroup.MapPatch("/{id:guid}", PatchAgenda)
+            .Accepts<PatchAgendaDto>("application/merge-patch+json", "application/json");
         agendaGroup.MapDelete("/{id:guid}", DeleteAgenda);
     }
 
@@ -68,9 +72,31 @@ public static class AgendaEndpoints
             return TypedResults.BadRequest(agendaResult.Error);
 
         var result = await agendaService.UpdateAsync(id, agendaResult.Value, cancellationToken);
-        return result.IsFailure
-            ? TypedResults.NotFound(result.Error)
-            : TypedResults.Ok(result.Value.ToDto());
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    private static async Task<IResult> PatchAgenda(
+        Guid id,
+        PatchAgendaDto patchAgendaDto,
+        IAgendaService agendaService,
+        CancellationToken cancellationToken)
+    {
+        var result = await agendaService.PatchAsync(id, patchAgendaDto.ToAgendaPatchData(), cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    // A missing agenda is a 404; any other failure (validation, unknown workstation / location, ...) is a 400.
+    private static IResult ToErrorResult(Error error)
+    {
+        return error == AgendaErrors.AgendaNotFound
+            ? TypedResults.NotFound(error)
+            : TypedResults.BadRequest(error);
     }
 
     private static async Task<IResult> DeleteAgenda(

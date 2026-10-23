@@ -45,9 +45,10 @@ public sealed class CreateAgendaCommandHandler(
 
         agendaRepository.Add(agendaResult.Value);
         var result = await unitOfWork.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Result.Failure<Agenda>(Error.CannotSaveChanges);
 
-        return result > 0
-            ? Result.Success(agendaResult.Value)
-            : Result.Failure<Agenda>(Error.CannotSaveChanges);
+        await agendaRepository.LoadDetailsAsync(agendaResult.Value, cancellationToken);
+        return Result.Success(agendaResult.Value);
     }
 }
