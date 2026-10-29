@@ -1,5 +1,6 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Storage;
+using MiasoftNanus.PhoneBook.Application.Agendas.Storage;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Errors;
@@ -16,7 +17,6 @@ public sealed class UploadPhotoAgendaCommandHandler(
     IFileStorage fileStorage
 ) : ICommandHandler<UploadPhotoAgendaCommand, Result<Agenda>>
 {
-    private const string Container = "agendas";
     private const long MaxPhotoSize = 2 * 1024 * 1024; // 2 MB
 
     private static readonly HashSet<string> AllowedExtensions =
@@ -44,7 +44,7 @@ public sealed class UploadPhotoAgendaCommandHandler(
 
         var previousImagePath = agenda.ImagePath;
         var storedFile = await fileStorage.SaveAsync(
-            command.Content, extension.ToLowerInvariant(), Container, cancellationToken);
+            command.Content, extension.ToLowerInvariant(), AgendaPhotoStorage.Container, cancellationToken);
 
         var changeResult = agenda.ChangeImagePath(storedFile.Path);
         if (changeResult.IsFailure)
@@ -72,9 +72,8 @@ public sealed class UploadPhotoAgendaCommandHandler(
             return Result.Failure<Agenda>(Error.CannotSaveChanges);
         }
 
-        // The previous photo is no longer referenced. Only files from this storage are removed.
-        if (previousImagePath is not null && previousImagePath.StartsWith($"{Container}/", StringComparison.Ordinal))
-            await fileStorage.DeleteAsync(previousImagePath, CancellationToken.None);
+        // The previous photo is no longer referenced.
+        await fileStorage.DeleteUnreferencedPhotoAsync(previousImagePath);
 
         await agendaRepository.LoadDetailsAsync(agenda, cancellationToken);
         return Result.Success(agenda);
