@@ -33,4 +33,12 @@ public interface IAgendaService : ICrudService<Agenda, Guid>
         string fileName,
         long length,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Asynchronously opens the stored photo of an agenda.
+    /// </summary>
+    /// <param name="id">The unique identifier of the agenda.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A result containing the photo, or an error if the agenda or its photo does not exist.</returns>
+    Task<Result<AgendaPhoto>> GetPhotoAsync(Guid id, CancellationToken cancellationToken = default);
 }

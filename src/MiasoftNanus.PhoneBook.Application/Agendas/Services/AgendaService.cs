@@ -7,6 +7,7 @@ using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UpdateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UploadPhotoAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaAll;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaById;
+using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetPhotoAgenda;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Entities;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Services;
@@ -83,5 +84,10 @@ public class AgendaService(IDispatcher dispatcher)
     {
         return Dispatcher.SendCommandAsync(
             new UploadPhotoAgendaCommand(id, content, fileName, length), cancellationToken);
+    }
+
+    public Task<Result<AgendaPhoto>> GetPhotoAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendQueryAsync(new GetPhotoAgendaQuery(id), cancellationToken);
     }
 }

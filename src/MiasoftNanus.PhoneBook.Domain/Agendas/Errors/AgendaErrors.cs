@@ -53,4 +53,8 @@ public static class AgendaErrors
     public static Error ImagePathCannotBeNullOrWhitespace =>
         new Error("AgendaErrors.ImagePathCannotBeNullOrWhitespace", "Image path cannot be null or whitespace."
         );
+
+    public static Error PhotoNotFound =>
+        new Error("AgendaErrors.PhotoNotFound", "The agenda does not have a photo."
+        );
 }

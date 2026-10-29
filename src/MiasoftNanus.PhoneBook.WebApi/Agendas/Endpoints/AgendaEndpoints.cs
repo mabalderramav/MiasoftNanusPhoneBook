@@ -3,6 +3,8 @@ using MiasoftNanus.PhoneBook.Domain.Agendas.Errors;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Services;
 using MiasoftNanus.PhoneBook.WebApi.Agendas.Dtos;
 using MiasoftNanus.PhoneBook.WebApi.Agendas.Mappers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Agendas.Endpoints;
 
@@ -11,16 +13,27 @@ namespace MiasoftNanus.PhoneBook.WebApi.Agendas.Endpoints;
 /// </summary>
 public static class AgendaEndpoints
 {
+    // Multipart overhead on top of the 2 MB photo rule of UploadPhotoAgendaCommandHandler.
+    private const long MaxPhotoRequestSize = 3 * 1024 * 1024;
+
+    private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
+
     public static void MapAgendaEndpoints(this IEndpointRouteBuilder app)
     {
         var agendaGroup = app.MapGroup("/agendas");
         agendaGroup.MapGet("/", GetAgendaAll);
-        agendaGroup.MapGet("/{id:guid}", GetAgendaById);
+        agendaGroup.MapGet($"/{{id:guid}}", GetAgendaById);
         agendaGroup.MapPost("/", CreateAgenda);
-        agendaGroup.MapPut("/{id:guid}", UpdateAgenda);
-        agendaGroup.MapPatch("/{id:guid}", PatchAgenda)
+        agendaGroup.MapPut($"/{{id:guid}}", UpdateAgenda);
+        agendaGroup.MapPatch($"/{{id:guid}}", PatchAgenda)
             .Accepts<PatchAgendaDto>("application/merge-patch+json", "application/json");
-        agendaGroup.MapDelete("/{id:guid}", DeleteAgenda);
+        agendaGroup.MapDelete($"/{{id:guid}}", DeleteAgenda);
+        agendaGroup.MapPut($"/{{id:guid}}/photo", UploadPhotoAgenda)
+            // IFormFile adds antiforgery metadata; this API has no cookie auth and no UseAntiforgery().
+            .DisableAntiforgery()
+            .WithMetadata(new RequestSizeLimitAttribute(MaxPhotoRequestSize))
+            .WithFormOptions(multipartBodyLengthLimit: MaxPhotoRequestSize);
+        agendaGroup.MapGet($"/{{id:guid}}/photo", GetPhotoAgenda);
     }
 
     private static async Task<IResult> GetAgendaAll(
@@ -89,6 +102,37 @@ public static class AgendaEndpoints
             return ToErrorResult(result.Error);
 
         return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    private static async Task<IResult> UploadPhotoAgenda(
+        Guid id,
+        IFormFile photo,
+        IAgendaService agendaService,
+        CancellationToken cancellationToken)
+    {
+        await using var content = photo.OpenReadStream();
+        var result = await agendaService.UploadPhotoAsync(
+            id, content, photo.FileName, photo.Length, cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.Ok(result.Value.ToDto());
+    }
+
+    private static async Task<IResult> GetPhotoAgenda(
+        Guid id,
+        IAgendaService agendaService,
+        CancellationToken cancellationToken)
+    {
+        var result = await agendaService.GetPhotoAsync(id, cancellationToken);
+        if (result.IsFailure)
+            return TypedResults.NotFound(result.Error);
+
+        if (!ContentTypeProvider.TryGetContentType(result.Value.FileName, out var contentType))
+            contentType = "application/octet-stream";
+
+        // TypedResults.Stream disposes of the stream after the response is written.
+        return TypedResults.Stream(result.Value.Content, contentType);
     }
 
     // A missing agenda is a 404; any other failure (validation, unknown workstation / location, ...) is a 400.
