@@ -36,4 +36,21 @@ public static class AgendaErrors
     public static Error UserIdCreatedCannotBeEmpty =>
         new Error("AgendaErrors.UserIdCreatedCannotBeEmpty", "User id created cannot be empty."
         );
+
+    public static Error PhotoCannotBeEmpty =>
+        new Error("AgendaErrors.PhotoCannotBeEmpty", "The photo cannot be empty."
+        );
+
+    public static Error PhotoTooLarge =>
+        new Error("AgendaErrors.PhotoTooLarge", "The photo exceeds the maximum allowed size."
+        );
+
+    public static Error PhotoInvalidFormat =>
+        new Error("AgendaErrors.PhotoInvalidFormat",
+            "The photo format is not allowed. Use jpg, jpeg, png or webp."
+        );
+
+    public static Error ImagePathCannotBeNullOrWhitespace =>
+        new Error("AgendaErrors.ImagePathCannotBeNullOrWhitespace", "Image path cannot be null or whitespace."
+        );
 }

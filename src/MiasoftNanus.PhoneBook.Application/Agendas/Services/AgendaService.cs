@@ -4,6 +4,7 @@ using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.CreateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.DeleteAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.PatchAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UpdateAgenda;
+using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UploadPhotoAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaAll;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Queries.GetAgendaById;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
@@ -71,5 +72,16 @@ public class AgendaService(IDispatcher dispatcher)
     public Task<Result<Agenda>> PatchAsync(Guid id, AgendaPatchData data, CancellationToken cancellationToken = default)
     {
         return Dispatcher.SendCommandAsync(new PatchAgendaCommand(id, data), cancellationToken);
+    }
+
+    public Task<Result<Agenda>> UploadPhotoAsync(
+        Guid id,
+        Stream content,
+        string fileName,
+        long length,
+        CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendCommandAsync(
+            new UploadPhotoAgendaCommand(id, content, fileName, length), cancellationToken);
     }
 }

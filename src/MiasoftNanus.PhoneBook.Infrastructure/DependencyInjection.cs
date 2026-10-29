@@ -1,4 +1,5 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Email;
+using MiasoftNanus.PhoneBook.Application.Abstractions.Storage;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Domain.Abstractions;
 using MiasoftNanus.PhoneBook.Domain.Agendas.Repositories;
@@ -10,6 +11,7 @@ using MiasoftNanus.PhoneBook.Domain.WorkAreas.Repositories;
 using MiasoftNanus.PhoneBook.Domain.Workstations.Repositories;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Email;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Security;
+using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Storage;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Infrastructure.Agendas;
 using MiasoftNanus.PhoneBook.Infrastructure.Locations;
@@ -70,6 +72,13 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+        var fileStorageOptions = new FileStorageOptions
+        {
+            RootPath = configuration[$"{FileStorageOptions.SectionName}:RootPath"] ?? "Storage"
+        };
+        services.AddSingleton(fileStorageOptions);
+        services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         return services;
     }
