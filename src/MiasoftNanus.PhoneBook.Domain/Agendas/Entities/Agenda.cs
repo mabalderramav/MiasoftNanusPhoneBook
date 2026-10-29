@@ -107,6 +107,18 @@ public class Agenda : Entity
         return Result.Success();
     }
 
+    /// <summary>
+    /// Removes the relative path of the agenda photo. Other members are not changed.
+    /// </summary>
+    public Result RemoveImagePath()
+    {
+        if (ImagePath is null)
+            return Result.Failure(AgendaErrors.PhotoNotFound);
+
+        ImagePath = null;
+        return Result.Success();
+    }
+
     private void Apply(AgendaCreationData data)
     {
         Code = data.Code;

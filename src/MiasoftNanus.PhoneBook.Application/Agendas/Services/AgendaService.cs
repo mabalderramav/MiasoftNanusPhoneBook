@@ -2,6 +2,7 @@ using MiasoftNanus.PhoneBook.Application.Abstractions.CQRS;
 using MiasoftNanus.PhoneBook.Application.Abstractions.Services;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.CreateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.DeleteAgenda;
+using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.DeletePhotoAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.PatchAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UpdateAgenda;
 using MiasoftNanus.PhoneBook.Application.Agendas.UseCases.Commands.UploadPhotoAgenda;
@@ -89,5 +90,10 @@ public class AgendaService(IDispatcher dispatcher)
     public Task<Result<AgendaPhoto>> GetPhotoAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return Dispatcher.SendQueryAsync(new GetPhotoAgendaQuery(id), cancellationToken);
+    }
+
+    public Task<Result> DeletePhotoAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return Dispatcher.SendCommandAsync(new DeletePhotoAgendaCommand(id), cancellationToken);
     }
 }

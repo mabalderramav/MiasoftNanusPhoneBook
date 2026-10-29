@@ -29,11 +29,11 @@ public static class AgendaEndpoints
             .Accepts<PatchAgendaDto>("application/merge-patch+json", "application/json");
         agendaGroup.MapDelete($"/{{id:guid}}", DeleteAgenda);
         agendaGroup.MapPut($"/{{id:guid}}/photo", UploadPhotoAgenda)
-            // IFormFile adds antiforgery metadata; this API has no cookie auth and no UseAntiforgery().
             .DisableAntiforgery()
             .WithMetadata(new RequestSizeLimitAttribute(MaxPhotoRequestSize))
             .WithFormOptions(multipartBodyLengthLimit: MaxPhotoRequestSize);
         agendaGroup.MapGet($"/{{id:guid}}/photo", GetPhotoAgenda);
+        agendaGroup.MapDelete($"/{{id:guid}}/photo", DeletePhotoAgenda);
     }
 
     private static async Task<IResult> GetAgendaAll(
@@ -135,10 +135,22 @@ public static class AgendaEndpoints
         return TypedResults.Stream(result.Value.Content, contentType);
     }
 
-    // A missing agenda is a 404; any other failure (validation, unknown workstation / location, ...) is a 400.
+    private static async Task<IResult> DeletePhotoAgenda(
+        Guid id,
+        IAgendaService agendaService,
+        CancellationToken cancellationToken)
+    {
+        var result = await agendaService.DeletePhotoAsync(id, cancellationToken);
+        if (result.IsFailure)
+            return ToErrorResult(result.Error);
+
+        return TypedResults.NoContent();
+    }
+
+    // A missing agenda or photo is a 404; any other failure (validation, unknown workstation / location, ...) is a 400.
     private static IResult ToErrorResult(Error error)
     {
-        return error == AgendaErrors.AgendaNotFound
+        return error == AgendaErrors.AgendaNotFound || error == AgendaErrors.PhotoNotFound
             ? TypedResults.NotFound(error)
             : TypedResults.BadRequest(error);
     }
