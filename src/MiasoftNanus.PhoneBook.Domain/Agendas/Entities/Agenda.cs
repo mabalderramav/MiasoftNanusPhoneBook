@@ -94,6 +94,19 @@ public class Agenda : Entity
         });
     }
 
+    /// <summary>
+    /// Changes the relative path of the agenda photo. Other members are not changed.
+    /// </summary>
+    /// <param name="imagePath">The relative path of the stored photo (e.g. <c>agendas/{name}.png</c>).</param>
+    public Result ChangeImagePath(string imagePath)
+    {
+        if (string.IsNullOrWhiteSpace(imagePath))
+            return Result.Failure(AgendaErrors.ImagePathCannotBeNullOrWhitespace);
+
+        ImagePath = imagePath.Trim();
+        return Result.Success();
+    }
+
     private void Apply(AgendaCreationData data)
     {
         Code = data.Code;

@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Local file storage (MNPB-139)
+/src/MiasoftNanus.PhoneBook.WebApi/Storage/
