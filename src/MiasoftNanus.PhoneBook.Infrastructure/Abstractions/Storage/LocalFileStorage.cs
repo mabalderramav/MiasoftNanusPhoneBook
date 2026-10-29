@@ -43,17 +43,42 @@ internal sealed class LocalFileStorage(FileStorageOptions options) : IFileStorag
         return new StoredFile(fileName, $"{container}/{fileName}", new FileInfo(fullPath).Length);
     }
 
+    public Task<Stream?> OpenReadAsync(string path, CancellationToken cancellationToken = default)
+    {
+        var fullPath = ResolveInsideRoot(path);
+        if (fullPath is null)
+            return Task.FromResult<Stream?>(null);
+
+        try
+        {
+            // FileShare.Delete: a concurrent upload may delete this (previous) photo while it is being sent.
+            Stream stream = new FileStream(
+                fullPath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete,
+                bufferSize: 4096, useAsync: true);
+            return Task.FromResult<Stream?>(stream);
+        }
+        catch (Exception ex) when (ex is FileNotFoundException or DirectoryNotFoundException)
+        {
+            return Task.FromResult<Stream?>(null);
+        }
+    }
+
     public Task DeleteAsync(string path, CancellationToken cancellationToken = default)
     {
-        var fullPath = Path.GetFullPath(Path.Combine(_rootPath, path));
-
-        // Never delete outside the storage root (e.g., an ImagePath set to "../../x" through PUT / PATCH).
-        if (!fullPath.StartsWith(_rootPath + Path.DirectorySeparatorChar, StringComparison.Ordinal))
-            return Task.CompletedTask;
-
-        if (File.Exists(fullPath))
+        var fullPath = ResolveInsideRoot(path);
+        if (fullPath is not null && File.Exists(fullPath))
             File.Delete(fullPath);
 
         return Task.CompletedTask;
+    }
+
+    // Returns the physical path, or null if it would be outside the storage root
+    // (e.g., an ImagePath set to "../../x" through PUT / PATCH).
+    private string? ResolveInsideRoot(string path)
+    {
+        var fullPath = Path.GetFullPath(Path.Combine(_rootPath, path));
+        return fullPath.StartsWith(_rootPath + Path.DirectorySeparatorChar, StringComparison.Ordinal)
+            ? fullPath
+            : null;
     }
 }
