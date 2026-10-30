@@ -48,8 +48,7 @@ public static class HealthEndpoints
                 {
                     return Results.NotFound();
                 }
-
-
+                
                 var apiConfig = apiConfigOptions.Value;
                 var environment = configuration["ASPNETCORE_ENVIRONMENT"];
                 return Results.Ok(new

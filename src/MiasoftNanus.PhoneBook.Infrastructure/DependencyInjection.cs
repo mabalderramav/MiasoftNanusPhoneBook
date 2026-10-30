@@ -14,6 +14,7 @@ using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Security;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Storage;
 using MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Time;
 using MiasoftNanus.PhoneBook.Infrastructure.Agendas;
+using MiasoftNanus.PhoneBook.Infrastructure.Config;
 using MiasoftNanus.PhoneBook.Infrastructure.Locations;
 using MiasoftNanus.PhoneBook.Infrastructure.Profiles;
 using MiasoftNanus.PhoneBook.Infrastructure.Users;
@@ -22,6 +23,7 @@ using MiasoftNanus.PhoneBook.Infrastructure.Workstations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure;
 
@@ -73,9 +75,10 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
+        var fileStorageConfig = services.BuildServiceProvider().GetRequiredService<IOptions<FileStorageConfig>>().Value;
         var fileStorageOptions = new FileStorageOptions
         {
-            RootPath = configuration[$"{FileStorageOptions.SectionName}:RootPath"] ?? "Storage"
+            RootPath = fileStorageConfig.RootPath
         };
         services.AddSingleton(fileStorageOptions);
         services.AddSingleton<IFileStorage, LocalFileStorage>();
