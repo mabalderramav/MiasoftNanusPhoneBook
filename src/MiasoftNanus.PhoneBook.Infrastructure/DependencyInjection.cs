@@ -17,6 +17,7 @@ using MiasoftNanus.PhoneBook.Infrastructure.Agendas;
 using MiasoftNanus.PhoneBook.Infrastructure.Config;
 using MiasoftNanus.PhoneBook.Infrastructure.Locations;
 using MiasoftNanus.PhoneBook.Infrastructure.Profiles;
+using MiasoftNanus.PhoneBook.Infrastructure.Shared.Configurations;
 using MiasoftNanus.PhoneBook.Infrastructure.Users;
 using MiasoftNanus.PhoneBook.Infrastructure.WorkAreas;
 using MiasoftNanus.PhoneBook.Infrastructure.Workstations;
@@ -55,12 +56,14 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString(ConfigurationConstants.DefaultConnection);
 
         services.AddDbContext<AppDbContext>(options => options
             .UseNpgsql(connectionString)
             .UseSnakeCaseNamingConvention()
         );
+
+        services.Configure<FileStorageConfig>(configuration.GetSection(ConfigurationConstants.FileStorageConfig));
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
@@ -74,13 +77,6 @@ public static class DependencyInjection
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-
-        var fileStorageConfig = services.BuildServiceProvider().GetRequiredService<IOptions<FileStorageConfig>>().Value;
-        var fileStorageOptions = new FileStorageOptions
-        {
-            RootPath = fileStorageConfig.RootPath
-        };
-        services.AddSingleton(fileStorageOptions);
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         return services;
