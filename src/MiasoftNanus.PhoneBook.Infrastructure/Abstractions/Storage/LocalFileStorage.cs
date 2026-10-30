@@ -1,13 +1,15 @@
 using MiasoftNanus.PhoneBook.Application.Abstractions.Storage;
+using MiasoftNanus.PhoneBook.Infrastructure.Config;
+using Microsoft.Extensions.Options;
 
 namespace MiasoftNanus.PhoneBook.Infrastructure.Abstractions.Storage;
 
 /// <summary>
 /// Implements <see cref="IFileStorage"/> on the local file system.
 /// </summary>
-internal sealed class LocalFileStorage(FileStorageOptions options) : IFileStorage
+internal sealed class LocalFileStorage(IOptions<FileStorageConfig> options) : IFileStorage
 {
-    private readonly string _rootPath = Path.GetFullPath(options.RootPath);
+    private readonly string _rootPath = Path.GetFullPath(options.Value.RootPath);
 
     public async Task<StoredFile> SaveAsync(
         Stream content,
