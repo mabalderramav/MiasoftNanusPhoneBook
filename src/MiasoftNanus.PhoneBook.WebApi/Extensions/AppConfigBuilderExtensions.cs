@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using MiasoftNanus.PhoneBook.Infrastructure.Config;
 using MiasoftNanus.PhoneBook.WebApi.Config;
 
 namespace MiasoftNanus.PhoneBook.WebApi.Extensions;
@@ -10,7 +11,7 @@ public static class AppConfigBuilderExtensions
 {
     /// <summary>
     /// Adds application configuration services to the dependency injection container,
-    /// including the configuration of the ApiConfig settings.
+    /// including the configuration of the ApiConfig and FileStorageConfig settings.
     /// </summary>
     /// <param name="services">
     /// The <see cref="IServiceCollection"/> to which the services are added.
@@ -23,6 +24,7 @@ public static class AppConfigBuilderExtensions
         IConfiguration configuration)
     {
         services.Configure<ApiConfig>(configuration.GetSection("API"));
+        services.Configure<FileStorageConfig>(configuration.GetSection("FileStorage"));
         services.ConfigureHttpJsonOptions(options =>
         {
             options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
